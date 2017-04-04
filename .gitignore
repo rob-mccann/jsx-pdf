@@ -1,0 +1,12 @@
+node_modules
+coverage
+npm-debug.log
+.sass-cache
+.DS_Store
+.idea
+tmp
+.vscode
+yarn-error.log
+
+dst
+
