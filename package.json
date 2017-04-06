@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node dst/index.js",
     "dev": "npm run build -- --watch src",
-    "build": "babel src --out-dir dst",
+    "build": "babel src --out-dir dst --ignore '**/*.test.js'",
+    "test": "mocha src/**/*.test.js",
     "prepublish": "npm run build"
   },
   "dependencies": {
@@ -21,6 +22,8 @@
     "babel-core": "^6.24.0",
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
-    "babel-preset-stage-3": "^6.22.0"
+    "babel-preset-stage-3": "^6.22.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }
