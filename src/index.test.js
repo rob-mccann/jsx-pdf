@@ -33,7 +33,9 @@ describe('#jsx-pdf', () => {
                    children: ['foobar']
                }]
            }, {})).to.deep.equal({
-               pageMargins: '10'
+               "content": [{
+                    "text": ["foobar"]
+               }]
            });
        });
    })
