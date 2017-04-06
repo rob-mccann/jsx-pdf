@@ -10,12 +10,12 @@ import PDFMake from 'pdfmake';
 import OpenSans from './fonts';
 
 
-function toPDFMake(tag, doc) {
+export function toPDFMake(tag, doc) {
     if (typeof tag === 'string') { // text element
         return tag;
     }
 
-    const { children, elementName, ...attributes } = tag;
+    const { children, elementName, attributes = {} } = tag;
 
     let resolvedChildren = undefined;
 
@@ -40,10 +40,14 @@ function toPDFMake(tag, doc) {
                 doc.pageMargins = attributes.margin;
             }
 
-            doc.info = pick(attributes, ['title', 'author', 'subject', 'keywords']);
+            const info = pick(attributes, ['title', 'author', 'subject', 'keywords']);
 
-            if (inst.children && inst.children.length) {
-                doc.content = doc.content.concat(resolvedChildren || []);
+            if (info.length > 0) {
+                doc.info = info;
+            }
+
+            if (children && children.length) {
+                doc.content = (doc.content || []).concat(resolvedChildren || []);
             }
 
             return doc;
@@ -55,10 +59,10 @@ function toPDFMake(tag, doc) {
             break;
         case 'stack':
         case 'group':
-            return { stack: resolvedChildren || children, ...attributes }; // children is only for TEXT tags
+            return { stack: resolvedChildren, ...attributes }; // children is only for TEXT tags
             break;
         case 'text':
-            return { text: resolvedChildren || children, ...attributes }; // children is only for TEXT tags
+            return { text: resolvedChildren, ...attributes }; // children is only for TEXT tags
             break;
         case 'columns':
             return { columns: resolvedChildren || [], ...attributes };

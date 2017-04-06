@@ -8,7 +8,7 @@
     "start": "node dst/index.js",
     "dev": "npm run build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
-    "test": "mocha src/**/*.test.js",
+    "test": "mocha --compilers js:babel-core/register src/**/*.test.js",
     "prepublish": "npm run build"
   },
   "dependencies": {

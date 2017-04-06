@@ -1,3 +1,5 @@
+import path from 'path';
+
 const OpenSans = {
     light: path.resolve(__dirname, '../fonts/OpenSans/OpenSans-Light.ttf'),
     normal: path.resolve(__dirname, '../fonts/OpenSans/OpenSans-Regular.ttf'),
