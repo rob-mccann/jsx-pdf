@@ -1,12 +1,23 @@
 language: node_js
 
 cache:
-  yarn: true
   directories:
     - node_modules
+    - $HOME/.yarn-cache
+
+# cf. https://github.com/travis-ci/travis-ci/issues/6720#issuecomment-254988120
+before_install:
+  # Repo for Yarn
+  - sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
+  - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+  - sudo apt-get update -qq
+  - sudo apt-get install -y -qq yarn
+
+install:
+  - yarn
 
 script:
-  - yarn run build
+  - yarn run test && yarn run build
 
 deploy:
   provider: npm
