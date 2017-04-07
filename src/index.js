@@ -1,6 +1,3 @@
-// TODO remove after PR #6 is merged
-/* eslint-disable no-param-reassign */
-
 // libs
 import flattenDeep from 'lodash/flattenDeep';
 import omit from 'lodash/omit';
@@ -12,18 +9,16 @@ import PDFMake from 'pdfmake';
 import OpenSans from './fonts';
 
 export function createElement(elementName, attributes, ...children) {
-  attributes = attributes || {};
-  children = flattenDeep(children);
+  const flatChildren = flattenDeep(children);
 
   if (typeof elementName === 'function') {
-    attributes.children = children;
-    return elementName(attributes);
+    return elementName({ ...attributes, children: flatChildren });
   }
 
   return {
     elementName,
-    children,
-    attributes,
+    children: flatChildren,
+    attributes: attributes || {},
   };
 }
 
@@ -53,30 +48,30 @@ export function toPDFMake(tag, doc) {
       throw new Error('<document> was already specified, you can only have one in the tree');
     }
 
-    doc = {
+    const resultDoc = {
       defaultStyle: {
         font: 'OpenSans',
         fontSize: 10,
       },
     };
 
-    doc.content = traverse(children, doc) || [];
+    resultDoc.content = traverse(children, resultDoc) || [];
 
     if (attributes.size) {
-      doc.pageSize = attributes.size;
+      resultDoc.pageSize = attributes.size;
     }
 
     if (attributes.margin) {
-      doc.pageMargins = attributes.margin;
+      resultDoc.pageMargins = attributes.margin;
     }
 
     const info = pick(attributes, ['title', 'author', 'subject', 'keywords']);
 
     if (info.length > 0) {
-      doc.info = info;
+      resultDoc.info = info;
     }
 
-    return doc;
+    return resultDoc;
   }
 
   const resolvedChildren = traverse(children, doc);
@@ -89,6 +84,7 @@ export function toPDFMake(tag, doc) {
   switch (elementName) {
     case 'footer':
     case 'header':
+      // eslint-disable-next-line no-param-reassign
       doc[elementName] = [{ stack: [...resolvedChildren], ...attributes }];
       return false;
     case 'stack':
