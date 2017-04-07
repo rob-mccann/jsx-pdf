@@ -76,9 +76,13 @@ describe('#jsx-pdf', () => {
   describe('document', () => {
     it('should add the children to the pdfmake content property', () => {
       expect(toPDFMake(
-        (<document>foobar</document>),
+        (<document>
+          <content>foobar</content>
+        </document>),
       )).to.deep.equal({
-        content: ['foobar'],
+        content: {
+          stack: ['foobar'],
+        },
         defaultStyle: {
           font: 'OpenSans',
           fontSize: 10,
@@ -90,7 +94,6 @@ describe('#jsx-pdf', () => {
       expect(toPDFMake(
         (<document margin={10} />),
       )).to.deep.equal({
-        content: [],
         pageMargins: 10,
         defaultStyle: {
           font: 'OpenSans',
@@ -101,16 +104,34 @@ describe('#jsx-pdf', () => {
 
     it('should traverse children', () => {
       expect(toPDFMake(
-        (<document><text>foobar</text></document>),
+        (<document>
+          <content>
+            <text>foobar</text>
+          </content>
+        </document>),
       )).to.deep.equal({
-        content: [{
-          text: ['foobar'],
-        }],
+        content: {
+          stack: [
+            { text: ['foobar'] },
+          ],
+        },
         defaultStyle: {
           font: 'OpenSans',
           fontSize: 10,
         },
       });
+    });
+
+    it('should error if a top level element appears below the top level', () => {
+      expect(() => {
+        toPDFMake(
+          <document>
+            <content>
+              <group><header /></group>
+            </content>
+          </document>,
+        );
+      }).to.throw(Error, /immediate descendents/);
     });
 
     it('should error if document is not the root element', () => {
@@ -119,10 +140,10 @@ describe('#jsx-pdf', () => {
       }).to.throw(Error, /root/);
     });
 
-    it('should error if more than one document element exists', () => {
+    it('should error if a document appears below the top level', () => {
       expect(() => {
-        toPDFMake(<document><document /></document>);
-      }).to.throw(Error, /already specified/);
+        toPDFMake(<document><content><document /></content></document>);
+      }).to.throw(Error, /root/);
     });
   });
 });
