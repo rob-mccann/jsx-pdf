@@ -10,6 +10,17 @@ import PDFMake from 'pdfmake';
 import OpenSans from './fonts';
 
 
+export function createElement(tag) {
+    const { elementName, attributes, children} = tag;
+
+    if (typeof elementName === 'function') {
+        attributes.children = children;
+        return elementName(attributes);
+    }
+
+    return tag;
+};
+
 export function toPDFMake(tag, doc) {
     if (typeof tag === 'string') { // text element
         return tag;
@@ -82,7 +93,7 @@ export function toPDFMake(tag, doc) {
     }
 }
 
-export default function render(elementJSON) {
+export function render(elementJSON) {
     const doc = {
         content: [],
         defaultStyle: {
