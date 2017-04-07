@@ -63,30 +63,52 @@ describe('#jsx-pdf', () => {
     it('should add the children to the pdfmake content property', () => {
       expect(toPDFMake(
         (<document>foobar</document>),
-        {},
       )).to.deep.equal({
         content: ['foobar'],
+        defaultStyle: {
+          font: 'OpenSans',
+          fontSize: 10,
+        },
       });
     });
 
     it('should set page margin', () => {
       expect(toPDFMake(
         (<document margin={10} />),
-        {},
       )).to.deep.equal({
+        content: [],
         pageMargins: 10,
+        defaultStyle: {
+          font: 'OpenSans',
+          fontSize: 10,
+        },
       });
     });
 
     it('should traverse children', () => {
       expect(toPDFMake(
         (<document><text>foobar</text></document>),
-        {},
       )).to.deep.equal({
         content: [{
           text: ['foobar'],
         }],
+        defaultStyle: {
+          font: 'OpenSans',
+          fontSize: 10,
+        },
       });
+    });
+
+    it('should error if document is not the root element', () => {
+      expect(() => {
+        toPDFMake(<group><text>foobar</text></group>);
+      }).to.throw(Error, /root/);
+    });
+
+    it('should error if more than one document element exists', () => {
+      expect(() => {
+        toPDFMake(<document><document /></document>);
+      }).to.throw(Error, /already specified/);
     });
   });
 });

@@ -27,6 +27,15 @@ export function createElement(elementName, attributes, ...children) {
   };
 }
 
+function traverse(children, doc) {
+  if (!children || children.length === 0) {
+    return [];
+  }
+
+  // eslint-disable-next-line no-use-before-define
+  return compact(children.map(child => toPDFMake(child, doc))); // compact removes empty elements
+}
+
 export function toPDFMake(tag, doc) {
   if (typeof tag === 'string') { // text element
     return tag;
@@ -34,14 +43,43 @@ export function toPDFMake(tag, doc) {
 
   const { children, elementName, attributes = {} } = tag;
 
-  let resolvedChildren;
-
-  // go down the tree and resolve children elements. This is done up here as we
-  // choose to do different things with children, based on the tag.
-  if (children && children.length) {
-    // compact removes empty elements
-    resolvedChildren = compact(children.map(child => toPDFMake(child, doc)));
+  if (!doc && elementName !== 'document') {
+    throw new Error('The root element must resolve to a <document>');
   }
+
+  // special case for document because we need the doc object before we traverse the children
+  if (elementName === 'document') {
+    if (doc) {
+      throw new Error('<document> was already specified, you can only have one in the tree');
+    }
+
+    doc = {
+      defaultStyle: {
+        font: 'OpenSans',
+        fontSize: 10,
+      },
+    };
+
+    doc.content = traverse(children, doc) || [];
+
+    if (attributes.size) {
+      doc.pageSize = attributes.size;
+    }
+
+    if (attributes.margin) {
+      doc.pageMargins = attributes.margin;
+    }
+
+    const info = pick(attributes, ['title', 'author', 'subject', 'keywords']);
+
+    if (info.length > 0) {
+      doc.info = info;
+    }
+
+    return doc;
+  }
+
+  const resolvedChildren = traverse(children, doc);
 
   /**
    * This is the meat. If you're in this file, you're probably looking for this.
@@ -49,27 +87,6 @@ export function toPDFMake(tag, doc) {
    * Converts the React-like syntax to something PDFMake understands.
    */
   switch (elementName) {
-    // eslint-disable-next-line no-case-declarations
-    case 'document':
-      if (attributes.size) {
-        doc.pageSize = attributes.size;
-      }
-
-      if (attributes.margin) {
-        doc.pageMargins = attributes.margin;
-      }
-
-      const info = pick(attributes, ['title', 'author', 'subject', 'keywords']);
-
-      if (info.length > 0) {
-        doc.info = info;
-      }
-
-      if (children && children.length) {
-        doc.content = (doc.content || []).concat(resolvedChildren || []);
-      }
-
-      return doc;
     case 'footer':
     case 'header':
       doc[elementName] = [{ stack: [...resolvedChildren], ...attributes }];
@@ -95,18 +112,10 @@ export function toPDFMake(tag, doc) {
 }
 
 export function render(elementJSON) {
-  const doc = {
-    content: [],
-    defaultStyle: {
-      font: 'OpenSans',
-      fontSize: 10,
-    },
-  };
+  // Recursively traverse the PDF template, converting the React-like syntax to pdfmake's syntax
+  const doc2 = toPDFMake(elementJSON);
 
-    // Recursively traverse the PDF template, converting the React-like syntax to pdfmake's syntax
-  const doc2 = toPDFMake(elementJSON, doc);
-
-    // the argument here contains a list of fonts on the filesystem. see fonts.js
+  // the argument here contains a list of fonts on the filesystem. see fonts.js
   const pdf = (new PDFMake({
     OpenSans,
   })).createPdfKitDocument(doc2);
