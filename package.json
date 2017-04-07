@@ -15,7 +15,8 @@
     "start": "node dst/index.js",
     "dev": "yarn run build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
-    "test": "eslint src && mocha --compilers js:babel-core/register src/**/*.test.js",
+    "lint": "eslint src",
+    "test": "yarn run lint && mocha --compilers js:babel-core/register src/**/*.test.js",
     "prepublish": "yarn run build"
   },
   "dependencies": {
