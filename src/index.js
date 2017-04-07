@@ -8,6 +8,9 @@ import compact from 'lodash/compact';
 import PDFMake from 'pdfmake';
 import OpenSans from './fonts';
 
+const isTextElement = tag => typeof tag === 'string';
+const isTopLevelElement = elementName => ['header', 'content', 'footer'].includes(elementName);
+
 export function createElement(elementName, attributes, ...children) {
   const flatChildren = flattenDeep(children);
 
@@ -22,59 +25,18 @@ export function createElement(elementName, attributes, ...children) {
   };
 }
 
-function traverse(children, doc) {
-  if (!children || children.length === 0) {
-    return [];
-  }
-
-  // eslint-disable-next-line no-use-before-define
-  return compact(children.map(child => toPDFMake(child, doc))); // compact removes empty elements
-}
-
-export function toPDFMake(tag, doc) {
-  if (typeof tag === 'string') { // text element
+function resolveChildren(tag, isTopLevel) {
+  if (isTextElement(tag)) {
     return tag;
   }
 
-  const { children, elementName, attributes = {} } = tag;
+  const { elementName, children, attributes } = tag;
 
-  if (!doc && elementName !== 'document') {
-    throw new Error('The root element must resolve to a <document>');
+  if (!isTopLevel && isTopLevelElement(elementName)) {
+    throw new Error('<header>, <content> and <footer> elements can only appear as immediate descendents of the <document>');
   }
 
-  // special case for document because we need the doc object before we traverse the children
-  if (elementName === 'document') {
-    if (doc) {
-      throw new Error('<document> was already specified, you can only have one in the tree');
-    }
-
-    const resultDoc = {
-      defaultStyle: {
-        font: 'OpenSans',
-        fontSize: 10,
-      },
-    };
-
-    resultDoc.content = traverse(children, resultDoc) || [];
-
-    if (attributes.size) {
-      resultDoc.pageSize = attributes.size;
-    }
-
-    if (attributes.margin) {
-      resultDoc.pageMargins = attributes.margin;
-    }
-
-    const info = pick(attributes, ['title', 'author', 'subject', 'keywords']);
-
-    if (info.length > 0) {
-      resultDoc.info = info;
-    }
-
-    return resultDoc;
-  }
-
-  const resolvedChildren = traverse(children, doc);
+  const resolvedChildren = compact((children || []).map(child => resolveChildren(child)));
 
   /**
    * This is the meat. If you're in this file, you're probably looking for this.
@@ -82,29 +44,66 @@ export function toPDFMake(tag, doc) {
    * Converts the React-like syntax to something PDFMake understands.
    */
   switch (elementName) {
-    case 'footer':
     case 'header':
-      // eslint-disable-next-line no-param-reassign
-      doc[elementName] = [{ stack: [...resolvedChildren], ...attributes }];
-      return false;
+    case 'content':
+    case 'footer':
     case 'stack':
     case 'group':
-      return { stack: resolvedChildren, ...attributes }; // children is only for TEXT tags
+    case 'cell':
+      return { stack: resolvedChildren, ...attributes };
     case 'text':
-      return { text: resolvedChildren, ...attributes }; // children is only for TEXT tags
     case 'columns':
-      return { columns: resolvedChildren || [], ...attributes };
+      return { [elementName]: resolvedChildren, ...attributes };
     case 'image':
       return { image: attributes.src, ...(omit(attributes, 'src')) };
     case 'table':
       return { table: { body: resolvedChildren, ...(pick(attributes, ['headerRows', 'widths'])) }, ...attributes };
     case 'row':
       return [...resolvedChildren];
-    case 'cell':
-      return { stack: resolvedChildren, ...attributes };
+    case 'document':
+      throw new Error('<document> can only appear as the root element');
     default:
       return false;
   }
+}
+
+export function toPDFMake(document) {
+  const { children, elementName, attributes = {} } = document;
+
+  if (elementName !== 'document') {
+    throw new Error('The root element must resolve to a <document>');
+  }
+
+  const result = {
+    defaultStyle: {
+      font: 'OpenSans',
+      fontSize: 10,
+    },
+  };
+
+  children.forEach((child) => {
+    if (!isTopLevelElement(child.elementName)) {
+      throw new Error('The <document> element can only content <header>, <content>, and <footer> elements.');
+    }
+
+    result[child.elementName] = resolveChildren(child, true);
+  });
+
+  if (attributes.size) {
+    result.pageSize = attributes.size;
+  }
+
+  if (attributes.margin) {
+    result.pageMargins = attributes.margin;
+  }
+
+  const info = pick(attributes, ['title', 'author', 'subject', 'keywords']);
+
+  if (info.length > 0) {
+    result.info = info;
+  }
+
+  return result;
 }
 
 export function render(elementJSON) {
