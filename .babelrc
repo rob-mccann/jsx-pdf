@@ -1,3 +1,6 @@
 {
-  "presets" : ["es2015", "react", "stage-3"]
+  "presets" : ["es2015", "stage-3"],
+  "plugins": [
+    ["transform-jsx", { "function": "createElement", "useVariables": true }]
+  ]
 }
