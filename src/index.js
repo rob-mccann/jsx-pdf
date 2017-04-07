@@ -2,6 +2,7 @@
 /* eslint-disable no-param-reassign */
 
 // libs
+import flattenDeep from 'lodash/flattenDeep';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import compact from 'lodash/compact';
@@ -10,15 +11,20 @@ import compact from 'lodash/compact';
 import PDFMake from 'pdfmake';
 import OpenSans from './fonts';
 
-export function createElement(tag) {
-  const { elementName, attributes, children } = tag;
+export function createElement(elementName, attributes, ...children) {
+  attributes = attributes || {};
+  children = flattenDeep(children);
 
   if (typeof elementName === 'function') {
     attributes.children = children;
     return elementName(attributes);
   }
 
-  return tag;
+  return {
+    elementName,
+    children,
+    attributes,
+  };
 }
 
 export function toPDFMake(tag, doc) {
