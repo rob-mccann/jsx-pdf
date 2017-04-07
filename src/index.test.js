@@ -57,6 +57,20 @@ describe('#jsx-pdf', () => {
         attributes: {},
       });
     });
+
+    it('should support object', () => {
+      const fragment = <text>test</text>;
+
+      expect(<group>{fragment}</group>).to.deep.equal({
+        elementName: 'group',
+        children: [{
+          elementName: 'text',
+          children: ['test'],
+          attributes: {},
+        }],
+        attributes: {},
+      });
+    });
   });
 
   describe('document', () => {
