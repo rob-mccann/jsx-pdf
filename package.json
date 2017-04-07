@@ -1,6 +1,6 @@
 {
   "name": "jsx-to-pdf",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "dst/index.js",
   "author": "Rob McCann <rob.mccann@schibsted.com>",
   "license": "UNLICENSED",
