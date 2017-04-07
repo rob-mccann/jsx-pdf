@@ -1,9 +1,16 @@
 {
   "name": "react-pdfmake",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "dst/index.js",
   "author": "Rob McCann <rob.mccann@schibsted.com>",
-  "license": "MIT",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git@github.schibsted.io:spt-advertising/jsx-pdfmake.git"
+  },
+  "publishConfig": {
+    "registry": "https://artifacts.schibsted.io/artifactory/api/npm/npm-local"
+  },
   "scripts": {
     "start": "node dst/index.js",
     "dev": "npm run build -- --watch src",
