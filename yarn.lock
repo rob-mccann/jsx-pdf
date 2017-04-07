@@ -583,14 +583,6 @@ babel-plugin-transform-flow-strip-types@^6.22.0:
     babel-plugin-syntax-flow "^6.18.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-jsx@^2.0.0:
-  version "2.0.0"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/babel-plugin-transform-jsx/-/babel-plugin-transform-jsx-2.0.0.tgz#b0f94c70d0a720fc1a5c15b0aae0fe5ba4a6f0aa"
-  dependencies:
-    babel-plugin-syntax-jsx "^6.3.13"
-    esutils "^2.0.2"
-    lodash "^4.0.0"
-
 babel-plugin-transform-object-rest-spread@^6.22.0:
   version "6.23.0"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.23.0.tgz#875d6bc9be761c58a2ae3feee5dc4895d8c7f921"
