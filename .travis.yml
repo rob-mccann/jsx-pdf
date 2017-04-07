@@ -1,5 +1,10 @@
 language: node_js
 
+cache:
+  directories:
+    - node_modules
+    - $HOME/.yarn-cache
+
 # cf. https://github.com/travis-ci/travis-ci/issues/6720#issuecomment-254988120
 before_install:
   # Repo for Yarn
@@ -8,10 +13,8 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y -qq yarn
 
-cache:
-  directories:
-    - node_modules
-    - $HOME/.yarn-cache
+install:
+  - yarn
 
 script:
   - yarn run test && yarn run build
