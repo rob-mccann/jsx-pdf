@@ -21,6 +21,8 @@ script:
 
 deploy:
   provider: npm
+  email: ${ARTIFACTORY_USER}
+  api_key: ${ARTIFACTORY_NPM_SECRET}
   skip_cleanup: true
   on:
     tags: true
