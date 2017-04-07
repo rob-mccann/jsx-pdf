@@ -15,7 +15,7 @@
     "start": "node dst/index.js",
     "dev": "yarn run build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
-    "test": "mocha --compilers js:babel-core/register src/**/*.test.js",
+    "test": "eslint src && mocha --compilers js:babel-core/register src/**/*.test.js",
     "prepublish": "yarn run build"
   },
   "dependencies": {
@@ -31,6 +31,11 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-3": "^6.22.0",
     "chai": "^3.5.0",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2 || ^4.0.0",
+    "eslint-plugin-react": "^6.9.0",
     "mocha": "^3.2.0"
   }
 }
