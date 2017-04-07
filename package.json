@@ -1,12 +1,12 @@
 {
-  "name": "react-pdfmake",
+  "name": "jsx-to-pdf",
   "version": "0.2.0",
   "main": "dst/index.js",
   "author": "Rob McCann <rob.mccann@schibsted.com>",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "git@github.schibsted.io:spt-advertising/jsx-pdfmake.git"
+    "url": "git@github.schibsted.io:spt-advertising/jsx-to-pdf.git"
   },
   "publishConfig": {
     "registry": "https://artifacts.schibsted.io/artifactory/api/npm/npm-local"
