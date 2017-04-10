@@ -11,13 +11,16 @@ import OpenSans from './fonts';
 const isTextElement = tag => typeof tag === 'string';
 const isTopLevelElement = elementName => ['header', 'content', 'footer'].includes(elementName);
 
+function updateContext(context, overrides) {
+  return Object.assign(context, overrides);
+}
+
+function createContext(parentContext = {}) {
+  return { ...parentContext };
+}
+
 export function createElement(elementName, attributes, ...children) {
   const flatChildren = flattenDeep(children);
-
-  if (typeof elementName === 'function') {
-    return elementName({ ...attributes, children: flatChildren });
-  }
-
   return {
     elementName,
     children: flatChildren,
@@ -25,18 +28,35 @@ export function createElement(elementName, attributes, ...children) {
   };
 }
 
-function resolveChildren(tag, isTopLevel) {
-  if (isTextElement(tag)) {
-    return tag;
+function resolve(tag, context) {
+  let resolvedTag = tag;
+  while (typeof resolvedTag.elementName === 'function') {
+    resolvedTag = resolvedTag.elementName(
+      { ...resolvedTag.attributes, children: resolvedTag.children },
+      context,
+      updateContext.bind(null, context),
+    );
   }
 
-  const { elementName, children, attributes } = tag;
+  return resolvedTag;
+}
+
+function resolveChildren(tag, parentContext, isTopLevel) {
+  const resolvedTag = resolve(tag, parentContext);
+
+  if (isTextElement(resolvedTag)) {
+    return resolvedTag;
+  }
+
+  const { elementName, children = [], attributes } = resolvedTag;
 
   if (!isTopLevel && isTopLevelElement(elementName)) {
     throw new Error('<header>, <content> and <footer> elements can only appear as immediate descendents of the <document>');
   }
 
-  const resolvedChildren = compact((children || []).map(child => resolveChildren(child)));
+  const resolvedChildren = compact(
+    children.map(child => resolveChildren(child, createContext(parentContext))),
+  );
 
   /**
    * This is the meat. If you're in this file, you're probably looking for this.
@@ -67,11 +87,13 @@ function resolveChildren(tag, isTopLevel) {
   }
 }
 
-export function toPDFMake(document) {
-  const { children, elementName, attributes = {} } = document;
+export function toPDFMake(tag) {
+  const context = createContext();
+  const resolvedTag = resolve(tag, context);
+  const { children, elementName, attributes = {} } = resolvedTag;
 
   if (elementName !== 'document') {
-    throw new Error('The root element must resolve to a <document>');
+    throw new Error(`The root element must resolve to a <document>, actually resolved to ${elementName}`);
   }
 
   const result = {
@@ -86,7 +108,7 @@ export function toPDFMake(document) {
       throw new Error('The <document> element can only content <header>, <content>, and <footer> elements.');
     }
 
-    result[child.elementName] = resolveChildren(child, true);
+    result[child.elementName] = resolveChildren(child, context, true);
   });
 
   if (attributes.size) {
