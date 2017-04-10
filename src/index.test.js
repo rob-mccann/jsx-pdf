@@ -253,5 +253,13 @@ describe('#jsx-pdf', () => {
         toPDFMake(<document><content><document /></content></document>);
       }).to.throw(Error, /root/);
     });
+
+    it('should not error if a top level element appears nested inside a function component', () => {
+      const Nested = () => (<content />);
+
+      expect(() => {
+        toPDFMake(<document><Nested /></document>);
+      }).to.not.throw(Error);
+    });
   });
 });
