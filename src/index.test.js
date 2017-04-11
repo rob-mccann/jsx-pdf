@@ -43,6 +43,20 @@ describe('#jsx-pdf', () => {
         },
       });
     });
+
+    it('should support numbers inside jsx', () => {
+      expect(toPDFMake(<document>
+        <content>{ 123 }</content>
+      </document>)).to.deep.equal({
+        content: {
+          stack: [123],
+        },
+        defaultStyle: {
+          font: 'OpenSans',
+          fontSize: 10,
+        },
+      });
+    });
   });
 
   describe('component functions', () => {
