@@ -54,6 +54,10 @@ function resolveChildren(tag, parentContext, isTopLevel) {
     throw new Error('<header>, <content> and <footer> elements can only appear as immediate descendents of the <document>');
   }
 
+  if (isTopLevel && !isTopLevelElement(elementName)) {
+    throw new Error(`The <document> element can only contain <header>, <content>, and <footer> elements but found ${elementName}`);
+  }
+
   const resolvedChildren = compact(
     children.map(child => resolveChildren(child, createContext(parentContext))),
   );
@@ -104,10 +108,6 @@ export function toPDFMake(tag) {
   };
 
   children.forEach((child) => {
-    if (!isTopLevelElement(child.elementName)) {
-      throw new Error('The <document> element can only content <header>, <content>, and <footer> elements.');
-    }
-
     result[child.elementName] = resolveChildren(child, context, true);
   });
 
