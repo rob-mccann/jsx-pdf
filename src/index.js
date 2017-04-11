@@ -8,7 +8,7 @@ import compact from 'lodash/compact';
 import PDFMake from 'pdfmake';
 import OpenSans from './fonts';
 
-const isTextElement = tag => typeof tag === 'string';
+const isTextElement = tag => typeof tag === 'string' || typeof tag === 'number';
 const isTopLevelElement = elementName => ['header', 'content', 'footer'].includes(elementName);
 
 function updateContext(context, overrides) {
