@@ -108,7 +108,8 @@ export function toPDFMake(tag) {
   };
 
   children.forEach((child) => {
-    result[child.elementName] = resolveChildren(child, context, true);
+    const resolvedChild = resolve(child, context);
+    result[resolvedChild.elementName] = resolveChildren(resolvedChild, context, true);
   });
 
   if (attributes.size) {

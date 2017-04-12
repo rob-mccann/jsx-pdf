@@ -275,5 +275,23 @@ describe('#jsx-pdf', () => {
         toPDFMake(<document><Nested /></document>);
       }).to.not.throw(Error);
     });
+
+    it('should resolve functional top level elements', () => {
+      const Component = () => (<content><text>test</text></content>);
+
+      expect(toPDFMake(<document>
+        <Component />
+      </document>)).to.deep.equal({
+        content: {
+          stack: [
+            { text: ['test'] },
+          ],
+        },
+        defaultStyle: {
+          font: 'OpenSans',
+          fontSize: 10,
+        },
+      });
+    });
   });
 });
