@@ -1,8 +1,9 @@
 // libs
 import flattenDeep from 'lodash/flattenDeep';
+import isNil from 'lodash/isNil';
+import last from 'lodash/last';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
-import compact from 'lodash/compact';
 
 // pdf
 import PDFMake from 'pdfmake';
@@ -58,9 +59,23 @@ function resolveChildren(tag, parentContext, isTopLevel) {
     throw new Error(`The <document> element can only contain <header>, <content>, and <footer> elements but found ${elementName}`);
   }
 
-  const resolvedChildren = compact(
-    children.map(child => resolveChildren(child, createContext(parentContext))),
-  );
+  const resolvedChildren = children.reduce((acc, child) => {
+    const resolvedChild = resolveChildren(child, createContext(parentContext));
+
+    if (isTextElement(last(acc)) && isTextElement(resolvedChild)) {
+      // If the previous child is a string
+      // and the next child is a string,
+      // join them together.
+      acc[acc.length - 1] = `${acc[acc.length - 1]}${resolvedChild}`;
+    } else if (!isNil(resolvedChild)) {
+      // Otherwise push the child onto
+      // the accumulator (as long as it's
+      // not null or undefined).
+      acc.push(resolvedChild);
+    }
+
+    return acc;
+  }, []);
 
   /**
    * This is the meat. If you're in this file, you're probably looking for this.

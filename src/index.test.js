@@ -57,6 +57,20 @@ describe('#jsx-pdf', () => {
         },
       });
     });
+
+    it('should concatenate consecutive numbers rather than adding them', () => {
+      expect(toPDFMake(<document>
+        <content>{ 123 }{ 456 }</content>
+      </document>)).to.deep.equal({
+        content: {
+          stack: ['123456'],
+        },
+        defaultStyle: {
+          font: 'OpenSans',
+          fontSize: 10,
+        },
+      });
+    });
   });
 
   describe('component functions', () => {
@@ -106,6 +120,28 @@ describe('#jsx-pdf', () => {
         content: {
           stack: [
             { text: ['test'] },
+          ],
+        },
+        defaultStyle: {
+          font: 'OpenSans',
+          fontSize: 10,
+        },
+      });
+    });
+
+    it('should join resulting text elements together', () => {
+      const Name = () => ('Mr. Test');
+
+      expect(toPDFMake(
+        <document>
+          <content>
+            <text>Hello <Name />!</text>
+          </content>
+        </document>,
+      )).to.deep.equal({
+        content: {
+          stack: [
+            { text: ['Hello Mr. Test!'] },
           ],
         },
         defaultStyle: {
