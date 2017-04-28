@@ -42,6 +42,14 @@ function resolve(tag, context) {
   return resolvedTag;
 }
 
+function unwrapTextElements(elements) {
+  if (elements.length === 1 && isTextElement(elements[0])) {
+    return elements[0];
+  }
+
+  return elements;
+}
+
 function resolveChildren(tag, parentContext, isTopLevel) {
   const resolvedTag = resolve(tag, parentContext);
 
@@ -91,8 +99,12 @@ function resolveChildren(tag, parentContext, isTopLevel) {
     case 'cell':
       return { stack: resolvedChildren, ...attributes };
     case 'text':
+      return {
+        text: unwrapTextElements(resolvedChildren),
+        ...attributes,
+      };
     case 'columns':
-      return { [elementName]: resolvedChildren, ...attributes };
+      return { columns: resolvedChildren, ...attributes };
     case 'image':
       return { image: attributes.src, ...(omit(attributes, 'src')) };
     case 'table':

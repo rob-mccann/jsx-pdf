@@ -33,8 +33,8 @@ describe('#jsx-pdf', () => {
       ).to.deep.equal({
         content: {
           stack: [
-            { text: ['first'] },
-            { text: ['second'] },
+            { text: 'first' },
+            { text: 'second' },
           ],
         },
         defaultStyle: {
@@ -82,7 +82,7 @@ describe('#jsx-pdf', () => {
       </document>)).to.deep.equal({
         content: {
           stack: [
-            { text: ['hello'] },
+            { text: 'hello' },
           ],
         },
         defaultStyle: {
@@ -102,7 +102,7 @@ describe('#jsx-pdf', () => {
         content: {
           stack: [
             {
-              stack: [{ text: ['hello'] }],
+              stack: [{ text: 'hello' }],
             },
           ],
         },
@@ -119,7 +119,7 @@ describe('#jsx-pdf', () => {
       expect(toPDFMake(<document><content>{fragment}</content></document>)).to.deep.equal({
         content: {
           stack: [
-            { text: ['test'] },
+            { text: 'test' },
           ],
         },
         defaultStyle: {
@@ -141,7 +141,7 @@ describe('#jsx-pdf', () => {
       )).to.deep.equal({
         content: {
           stack: [
-            { text: ['Hello Mr. Test!'] },
+            { text: 'Hello Mr. Test!' },
           ],
         },
         defaultStyle: {
@@ -165,7 +165,7 @@ describe('#jsx-pdf', () => {
       ).to.deep.equal({
         content: {
           stack: [
-            { text: ['hello'] },
+            { text: 'hello' },
           ],
         },
         defaultStyle: {
@@ -196,7 +196,7 @@ describe('#jsx-pdf', () => {
       )).to.deep.equal({
         content: {
           stack: [
-            { text: ['test'] },
+            { text: 'test' },
           ],
         },
         defaultStyle: {
@@ -224,8 +224,8 @@ describe('#jsx-pdf', () => {
       ))).to.deep.equal({
         content: {
           stack: [
-            { text: ['first'] },
-            { text: ['it worked'] },
+            { text: 'first' },
+            { text: 'it worked' },
           ],
         },
         defaultStyle: {
@@ -256,7 +256,7 @@ describe('#jsx-pdf', () => {
       )).to.deep.equal({
         content: {
           stack: [
-            { text: ['test'] },
+            { text: 'test' },
           ],
         },
         defaultStyle: {
@@ -320,7 +320,7 @@ describe('#jsx-pdf', () => {
       </document>)).to.deep.equal({
         content: {
           stack: [
-            { text: ['test'] },
+            { text: 'test' },
           ],
         },
         defaultStyle: {
