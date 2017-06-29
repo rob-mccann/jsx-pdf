@@ -31,7 +31,7 @@ export function createElement(elementName, attributes, ...children) {
 
 function resolve(tag, context) {
   let resolvedTag = tag;
-  while (typeof resolvedTag.elementName === 'function') {
+  while (resolvedTag && typeof resolvedTag.elementName === 'function') {
     resolvedTag = resolvedTag.elementName(
       { ...resolvedTag.attributes, children: resolvedTag.children },
       context,
@@ -52,6 +52,10 @@ function unwrapTextElements(elements) {
 
 function resolveChildren(tag, parentContext, isTopLevel) {
   const resolvedTag = resolve(tag, parentContext);
+
+  if (!resolvedTag) {
+    return null;
+  }
 
   if (isTextElement(resolvedTag)) {
     return resolvedTag;
@@ -114,7 +118,7 @@ function resolveChildren(tag, parentContext, isTopLevel) {
     case 'document':
       throw new Error('<document> can only appear as the root element');
     default:
-      return false;
+      return null;
   }
 }
 
