@@ -172,7 +172,7 @@ describe('#jsx-pdf', () => {
     const Empty = () => '';
     const Zero = () => 0;
     const NAN = () => NaN;
-    const False = () => (() => false)();
+    const False = () => () => false;
 
     expect(toPDFMake(
       <document>
