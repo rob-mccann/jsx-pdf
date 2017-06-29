@@ -152,6 +152,47 @@ describe('#jsx-pdf', () => {
     });
   });
 
+  it('should ignore falsy values', () => {
+    expect(toPDFMake(<document>
+      <content>Hello{ null }{ undefined }{ '' }{ 0 }{ NaN }{ false }!</content>
+    </document>)).to.deep.equal({
+      content: {
+        stack: ['Hello!'],
+      },
+      defaultStyle: {
+        font: 'OpenSans',
+        fontSize: 10,
+      },
+    });
+  });
+
+  it('should ignore wrapped falsy values', () => {
+    const Null = () => null;
+    const Undefined = () => {};
+    const Empty = () => '';
+    const Zero = () => 0;
+    const NAN = () => NaN;
+    const False = () => (() => false)();
+
+    expect(toPDFMake(
+      <document>
+        <content>
+          <text>Hello<Null /><Undefined /><Empty /><Zero /><NAN /><False />!</text>
+        </content>
+      </document>,
+    )).to.deep.equal({
+      content: {
+        stack: [
+          { text: 'Hello!' },
+        ],
+      },
+      defaultStyle: {
+        font: 'OpenSans',
+        fontSize: 10,
+      },
+    });
+  });
+
   describe('higher order components', () => {
     it('should allow higher order components', () => {
       const Component = attributes => <text>{attributes.children}</text>;
