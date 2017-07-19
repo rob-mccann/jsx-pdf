@@ -2,6 +2,15 @@
 # yarn lockfile v1
 
 
+"@schibsted-ads/pdfmake@^0.2.0":
+  version "0.2.0"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/@schibsted-ads/pdfmake/-/@schibsted-ads/pdfmake-0.2.0.tgz#89186f88780706ec51be53a676e5bfd66d82818b"
+  dependencies:
+    iconv-lite "^0.4.17"
+    linebreak "^0.3.0"
+    lodash "^4.17.4"
+    pdfkit "^0.8.2"
+
 abbrev@1:
   version "1.1.0"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
@@ -12,13 +21,13 @@ acorn-jsx@^3.0.0:
   dependencies:
     acorn "^3.0.4"
 
-acorn@^1.0.3:
-  version "1.2.2"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/acorn/-/acorn-1.2.2.tgz#c8ce27de0acc76d896d2b1fad3df588d9e82f014"
-
 acorn@^3.0.4:
   version "3.3.0"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
+
+acorn@^5.0.0:
+  version "5.1.1"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/acorn/-/acorn-5.1.1.tgz#53fe161111f912ab999ee887a90a0bc52822fd75"
 
 acorn@^5.0.1:
   version "5.0.3"
@@ -708,8 +717,8 @@ base64-js@0.0.8:
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/base64-js/-/base64-js-0.0.8.tgz#1101e9544f4a76b1bc3b26d452ca96d7a35e7978"
 
 base64-js@^1.1.2:
-  version "1.2.0"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/base64-js/-/base64-js-1.2.0.tgz#a39992d723584811982be5e290bb6a53d86700f1"
+  version "1.2.1"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/base64-js/-/base64-js-1.2.1.tgz#a91947da1f4a516ea38e5b4ec0ec3773675e0886"
 
 bcrypt-pbkdf@^1.0.0:
   version "1.0.1"
@@ -758,8 +767,8 @@ brfs@^1.3.0, brfs@^1.4.0:
     through2 "^2.0.0"
 
 brotli@^1.2.0:
-  version "1.3.1"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/brotli/-/brotli-1.3.1.tgz#352a6f3f6973c5a74fd4be04aba40b337b3b6a7e"
+  version "1.3.2"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/brotli/-/brotli-1.3.2.tgz#525a9cad4fcba96475d7d388f6aecb13eed52f46"
   dependencies:
     base64-js "^1.1.2"
 
@@ -882,21 +891,13 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
 
-concat-stream@^1.5.2:
+concat-stream@^1.5.2, concat-stream@~1.6.0:
   version "1.6.0"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/concat-stream/-/concat-stream-1.6.0.tgz#0aac662fd52be78964d5532f694784e70110acf7"
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
-
-concat-stream@~1.4.5:
-  version "1.4.10"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/concat-stream/-/concat-stream-1.4.10.tgz#acc3bbf5602cb8cc980c6ac840fa7d8603e3ef36"
-  dependencies:
-    inherits "~2.0.1"
-    readable-stream "~1.1.9"
-    typedarray "~0.0.5"
 
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
@@ -1004,8 +1005,8 @@ detect-indent@^4.0.0:
     repeating "^2.0.0"
 
 dfa@^1.0.0:
-  version "1.0.0"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/dfa/-/dfa-1.0.0.tgz#1e8665a345f967bee13a8850f40592ec4fe447df"
+  version "1.1.0"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/dfa/-/dfa-1.1.0.tgz#d30218bd10d030fa421df3ebbc82285463a31781"
   dependencies:
     babel-runtime "^6.11.6"
 
@@ -1348,11 +1349,11 @@ extsprintf@1.0.2:
   version "1.0.2"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/extsprintf/-/extsprintf-1.0.2.tgz#e1080e0658e300b06294990cc70e1502235fd550"
 
-falafel@^1.0.0:
-  version "1.2.0"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/falafel/-/falafel-1.2.0.tgz#c18d24ef5091174a497f318cd24b026a25cddab4"
+falafel@^2.1.0:
+  version "2.1.0"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/falafel/-/falafel-2.1.0.tgz#96bb17761daba94f46d001738b3cedf3a67fe06c"
   dependencies:
-    acorn "^1.0.3"
+    acorn "^5.0.0"
     foreach "^2.0.5"
     isarray "0.0.1"
     object-keys "^1.0.6"
@@ -1406,8 +1407,8 @@ flat-cache@^1.2.1:
     write "^0.2.1"
 
 fontkit@^1.0.0:
-  version "1.5.4"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/fontkit/-/fontkit-1.5.4.tgz#d6d56371110bf7449b54c6cf6b3263ea1c0303b1"
+  version "1.7.7"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/fontkit/-/fontkit-1.7.7.tgz#ebaf2d8f3fedf302ae3c64b4beeaddc247fcdbb1"
   dependencies:
     babel-runtime "^6.11.6"
     brfs "^1.4.0"
@@ -1633,6 +1634,10 @@ http-signature@~1.1.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
+iconv-lite@^0.4.17:
+  version "0.4.18"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/iconv-lite/-/iconv-lite-0.4.18.tgz#23d8656b16aae6742ac29732ea8f0336a4789cf2"
+
 ignore@^3.2.0:
   version "3.2.7"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/ignore/-/ignore-3.2.7.tgz#4810ca5f1d8eca5595213a34b94f2eb4ed926bbd"
@@ -1648,7 +1653,7 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-inherits@2, inherits@^2.0.1, inherits@^2.0.3, inherits@~2.0.0, inherits@~2.0.1:
+inherits@2, inherits@^2.0.1, inherits@^2.0.3, inherits@~2.0.0, inherits@~2.0.1, inherits@~2.0.3:
   version "2.0.3"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
@@ -1917,12 +1922,6 @@ linebreak@^0.3.0:
     base64-js "0.0.8"
     brfs "^1.3.0"
     unicode-trie "^0.3.0"
-
-linebreak@~0.1.0:
-  version "0.1.2"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/linebreak/-/linebreak-0.1.2.tgz#67ef2db4a4698902e87eba9a0ee4f8490aa717e6"
-  dependencies:
-    unicode-trie "^0.1.1"
 
 lodash._baseassign@^3.0.0:
   version "3.2.0"
@@ -2219,21 +2218,13 @@ path-parse@^1.0.5:
   version "1.0.5"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/path-parse/-/path-parse-1.0.5.tgz#3c1adf871ea9cd6c9431b6ea2bd74a0ff055c4c1"
 
-pdfkit@^0.8.0:
-  version "0.8.0"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/pdfkit/-/pdfkit-0.8.0.tgz#0b3f7c0c3b00cc4f7f69e46d85d2a7cbb3818af6"
+pdfkit@^0.8.2:
+  version "0.8.3"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/pdfkit/-/pdfkit-0.8.3.tgz#ec99a57fc55ca309726f856456da14418f5330e3"
   dependencies:
     fontkit "^1.0.0"
-    linebreak "~0.1.0"
-    png-js ">=0.1.0"
-
-pdfmake@^0.1.27:
-  version "0.1.27"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/pdfmake/-/pdfmake-0.1.27.tgz#7c146dabb20a28724fdb56bfd3d42f89bc7c431b"
-  dependencies:
     linebreak "^0.3.0"
-    lodash "^4.17.4"
-    pdfkit "^0.8.0"
+    png-js ">=0.1.0"
 
 performance-now@^0.2.0:
   version "0.2.0"
@@ -2332,7 +2323,7 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-"readable-stream@^2.0.0 || ^1.1.13", readable-stream@^2.0.2, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.2:
+"readable-stream@^2.0.0 || ^1.1.13", readable-stream@^2.0.2, readable-stream@^2.1.4, readable-stream@^2.2.2:
   version "2.2.6"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/readable-stream/-/readable-stream-2.2.6.tgz#8b43aed76e71483938d12a8d46c6cf1a00b1f816"
   dependencies:
@@ -2342,6 +2333,18 @@ rc@^1.1.7:
     isarray "~1.0.0"
     process-nextick-args "~1.0.6"
     string_decoder "~0.10.x"
+    util-deprecate "~1.0.1"
+
+readable-stream@^2.1.5:
+  version "2.3.3"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/readable-stream/-/readable-stream-2.3.3.tgz#368f2512d79f9d46fdfc71349ae7878bbc1eb95c"
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.3"
+    isarray "~1.0.0"
+    process-nextick-args "~1.0.6"
+    safe-buffer "~5.1.1"
+    string_decoder "~1.0.3"
     util-deprecate "~1.0.1"
 
 readable-stream@~1.0.17, readable-stream@~1.0.27-1:
@@ -2486,7 +2489,13 @@ resolve@1.1.7:
   version "1.1.7"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
-resolve@^1.1.5, resolve@^1.1.6:
+resolve@^1.1.5:
+  version "1.3.3"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/resolve/-/resolve-1.3.3.tgz#655907c3469a8680dc2de3a275a8fdd69691f0e5"
+  dependencies:
+    path-parse "^1.0.5"
+
+resolve@^1.1.6:
   version "1.3.2"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/resolve/-/resolve-1.3.2.tgz#1f0442c9e0cbb8136e87b9305f932f46c7f28235"
   dependencies:
@@ -2500,8 +2509,8 @@ restore-cursor@^1.0.1:
     onetime "^1.0.0"
 
 restructure@^0.5.3:
-  version "0.5.3"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/restructure/-/restructure-0.5.3.tgz#b35f4b2a403383bc6103f38ecf7fcbe488b5ef77"
+  version "0.5.4"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/restructure/-/restructure-0.5.4.tgz#f54e7dd563590fb34fd6bf55876109aeccb28de8"
   dependencies:
     browserify-optional "^1.0.0"
 
@@ -2524,6 +2533,10 @@ rx-lite@^3.1.2:
 safe-buffer@^5.0.1:
   version "5.0.1"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
+
+safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+  version "5.1.1"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
 semver@^5.3.0:
   version "5.3.0"
@@ -2609,13 +2622,13 @@ static-eval@~0.2.0:
     escodegen "~0.0.24"
 
 static-module@^1.1.0:
-  version "1.3.1"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/static-module/-/static-module-1.3.1.tgz#79071d340e4419e4ab5ce87976a9eb67250c8493"
+  version "1.4.0"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/static-module/-/static-module-1.4.0.tgz#bef0d9b6f89585f6f2359b8161beeab06055dbd2"
   dependencies:
-    concat-stream "~1.4.5"
+    concat-stream "~1.6.0"
     duplexer2 "~0.0.2"
     escodegen "~1.3.2"
-    falafel "^1.0.0"
+    falafel "^2.1.0"
     has "^1.0.0"
     object-inspect "~0.4.0"
     quote-stream "~0.0.0"
@@ -2642,6 +2655,12 @@ string-width@^2.0.0:
 string_decoder@~0.10.x:
   version "0.10.31"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
+
+string_decoder@~1.0.3:
+  version "1.0.3"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/string_decoder/-/string_decoder-1.0.3.tgz#0fc67d7c141825de94282dd536bec6b9bce860ab"
+  dependencies:
+    safe-buffer "~5.1.0"
 
 stringstream@~0.0.4:
   version "0.0.5"
@@ -2771,7 +2790,7 @@ type-detect@^1.0.0:
   version "1.0.0"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/type-detect/-/type-detect-1.0.0.tgz#762217cc06db258ec48908a1298e8b95121e8ea2"
 
-typedarray@^0.0.6, typedarray@~0.0.5:
+typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
@@ -2785,10 +2804,6 @@ unicode-properties@^1.0.0:
   dependencies:
     brfs "^1.4.0"
     unicode-trie "^0.3.0"
-
-unicode-trie@^0.1.1:
-  version "0.1.2"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/unicode-trie/-/unicode-trie-0.1.2.tgz#bd3c528bc3360cafdf71f0863cbec29fc0e84ec8"
 
 unicode-trie@^0.3.0:
   version "0.3.1"
