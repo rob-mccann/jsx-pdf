@@ -6,7 +6,7 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 
 // pdf
-import PDFMake from '@schibsted-ads/pdfmake';
+import PDFMake from 'pdfmake';
 import OpenSans from './fonts';
 
 const isTextElement = tag => typeof tag === 'string' || typeof tag === 'number';
