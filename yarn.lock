@@ -2,15 +2,6 @@
 # yarn lockfile v1
 
 
-"@schibsted-ads/pdfmake@^0.2.0":
-  version "0.2.0"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/@schibsted-ads/pdfmake/-/@schibsted-ads/pdfmake-0.2.0.tgz#89186f88780706ec51be53a676e5bfd66d82818b"
-  dependencies:
-    iconv-lite "^0.4.17"
-    linebreak "^0.3.0"
-    lodash "^4.17.4"
-    pdfkit "^0.8.2"
-
 abbrev@1:
   version "1.1.0"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
@@ -1634,9 +1625,11 @@ http-signature@~1.1.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-iconv-lite@^0.4.17:
-  version "0.4.18"
-  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/iconv-lite/-/iconv-lite-0.4.18.tgz#23d8656b16aae6742ac29732ea8f0336a4789cf2"
+iconv-lite@^0.4.19:
+  version "0.4.23"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/iconv-lite/-/iconv-lite-0.4.23.tgz?dl=https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.23.tgz#297871f63be507adcfbfca715d0cd0eed84e9a63"
+  dependencies:
+    safer-buffer ">= 2.1.2 < 3"
 
 ignore@^3.2.0:
   version "3.2.7"
@@ -2218,13 +2211,21 @@ path-parse@^1.0.5:
   version "1.0.5"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/path-parse/-/path-parse-1.0.5.tgz#3c1adf871ea9cd6c9431b6ea2bd74a0ff055c4c1"
 
-pdfkit@^0.8.2:
+pdfkit@^0.8.3:
   version "0.8.3"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/pdfkit/-/pdfkit-0.8.3.tgz#ec99a57fc55ca309726f856456da14418f5330e3"
   dependencies:
     fontkit "^1.0.0"
     linebreak "^0.3.0"
     png-js ">=0.1.0"
+
+pdfmake@^0.1.36:
+  version "0.1.36"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/pdfmake/-/pdfmake-0.1.36.tgz?dl=https://registry.yarnpkg.com/pdfmake/-/pdfmake-0.1.36.tgz#63e18d633927198084e4d96aaa616436cd7ea95a"
+  dependencies:
+    iconv-lite "^0.4.19"
+    linebreak "^0.3.0"
+    pdfkit "^0.8.3"
 
 performance-now@^0.2.0:
   version "0.2.0"
@@ -2537,6 +2538,10 @@ safe-buffer@^5.0.1:
 safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
+
+"safer-buffer@>= 2.1.2 < 3":
+  version "2.1.2"
+  resolved "https://artifacts.schibsted.io/artifactory/api/npm/npm-virtual/safer-buffer/-/safer-buffer-2.1.2.tgz?dl=https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
 
 semver@^5.3.0:
   version "5.3.0"
