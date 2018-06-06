@@ -7,9 +7,11 @@ import { toPDFMake, createElement } from './index';
 describe('#jsx-pdf', () => {
   describe('basics', () => {
     it('should return the pdfmake document definition for simple components', () => {
-      expect(toPDFMake(<document>
-        <content>hello</content>
-      </document>)).to.deep.equal({
+      expect(toPDFMake(
+        <document>
+          <content>hello</content>
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: ['hello'],
         },
@@ -21,16 +23,14 @@ describe('#jsx-pdf', () => {
     });
 
     it('should return the pdfmake document definition for complex trees of components', () => {
-      expect(
-        toPDFMake((
-          <document>
-            <content>
-              <text>first</text>
-              <text>second</text>
-            </content>
-          </document>
-        )),
-      ).to.deep.equal({
+      expect(toPDFMake(
+        <document>
+          <content>
+            <text>first</text>
+            <text>second</text>
+          </content>
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: [
             { text: 'first' },
@@ -45,9 +45,11 @@ describe('#jsx-pdf', () => {
     });
 
     it('should support numbers inside jsx', () => {
-      expect(toPDFMake(<document>
-        <content>{ 123 }</content>
-      </document>)).to.deep.equal({
+      expect(toPDFMake(
+        <document>
+          <content>{ 123 }</content>
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: [123],
         },
@@ -59,9 +61,11 @@ describe('#jsx-pdf', () => {
     });
 
     it('should concatenate consecutive numbers rather than adding them', () => {
-      expect(toPDFMake(<document>
-        <content>{ 123 }{ 456 }</content>
-      </document>)).to.deep.equal({
+      expect(toPDFMake(
+        <document>
+          <content>{ 123 }{ 456 }</content>
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: ['123456'],
         },
@@ -77,9 +81,11 @@ describe('#jsx-pdf', () => {
     it('should traverse composite components', () => {
       const Component = () => (<text>hello</text>);
 
-      expect(toPDFMake(<document>
-        <content><Component /></content>
-      </document>)).to.deep.equal({
+      expect(toPDFMake(
+        <document>
+          <content><Component /></content>
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: [
             { text: 'hello' },
@@ -96,9 +102,11 @@ describe('#jsx-pdf', () => {
       const ChildComponent = () => (<text>hello</text>);
       const Component = () => (<group><ChildComponent /></group>);
 
-      expect(toPDFMake(<document>
-        <content><Component /></content>
-      </document>)).to.deep.equal({
+      expect(toPDFMake(
+        <document>
+          <content><Component /></content>
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: [
             {
@@ -153,9 +161,11 @@ describe('#jsx-pdf', () => {
   });
 
   it('should ignore falsy values', () => {
-    expect(toPDFMake(<document>
-      <content>Hello{ null }{ undefined }{ '' }{ 0 }{ NaN }{ false }!</content>
-    </document>)).to.deep.equal({
+    expect(toPDFMake(
+      <document>
+        <content>Hello{ null }{ undefined }{ '' }{ 0 }{ NaN }{ false }!</content>
+      </document>,
+    )).to.deep.equal({
       content: {
         stack: ['Hello!'],
       },
@@ -202,8 +212,8 @@ describe('#jsx-pdf', () => {
           <content>
             <Component>hello</Component>
           </content>
-        </document>),
-      ).to.deep.equal({
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: [
             { text: 'hello' },
@@ -227,13 +237,13 @@ describe('#jsx-pdf', () => {
       const MyContextualisedComponent = (attributes, context) => <text>{ context.mytest }</text>;
 
       expect(toPDFMake(
-        (<Provider>
+        <Provider>
           <document>
             <content>
               <MyContextualisedComponent />
             </content>
           </document>
-        </Provider>),
+        </Provider>,
       )).to.deep.equal({
         content: {
           stack: [
@@ -255,14 +265,14 @@ describe('#jsx-pdf', () => {
 
       const SiblingProvider = (attributes, context) => <text>{ context.mytest || 'it worked' }</text>;
 
-      expect(toPDFMake((
+      expect(toPDFMake(
         <document>
           <content>
             <Provider />
             <SiblingProvider />
           </content>
-        </document>
-      ))).to.deep.equal({
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: [
             { text: 'first' },
@@ -287,13 +297,13 @@ describe('#jsx-pdf', () => {
       const MyParentComponent = () => <MyContextualisedComponent />;
 
       expect(toPDFMake(
-        (<Provider>
+        <Provider>
           <document>
             <content>
               <MyParentComponent />
             </content>
           </document>
-        </Provider>),
+        </Provider>,
       )).to.deep.equal({
         content: {
           stack: [
@@ -356,9 +366,11 @@ describe('#jsx-pdf', () => {
     it('should resolve functional top level elements', () => {
       const Component = () => (<content><text>test</text></content>);
 
-      expect(toPDFMake(<document>
-        <Component />
-      </document>)).to.deep.equal({
+      expect(toPDFMake(
+        <document>
+          <Component />
+        </document>,
+      )).to.deep.equal({
         content: {
           stack: [
             { text: 'test' },
