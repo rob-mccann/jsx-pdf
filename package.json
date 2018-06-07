@@ -13,11 +13,11 @@
   },
   "scripts": {
     "start": "node dst/index.js",
-    "dev": "yarn run build -- --watch src",
+    "dev": "yarn build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
     "lint": "eslint src",
-    "test": "yarn run lint && yarn run jest",
-    "prepublish": "yarn run build"
+    "test": "yarn lint && jest",
+    "prepublish": "yarn build"
   },
   "dependencies": {
     "lodash": "^4.17.10",
