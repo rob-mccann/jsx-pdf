@@ -1,7 +1,3 @@
-/* eslint-env mocha */
-
-import { expect } from 'chai';
-
 import { toPDFMake, createElement } from './index';
 
 describe('#jsx-pdf', () => {
@@ -11,7 +7,7 @@ describe('#jsx-pdf', () => {
         <document>
           <content>hello</content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: ['hello'],
         },
@@ -30,7 +26,7 @@ describe('#jsx-pdf', () => {
             <text>second</text>
           </content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             { text: 'first' },
@@ -49,7 +45,7 @@ describe('#jsx-pdf', () => {
         <document>
           <content>{ 123 }</content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [123],
         },
@@ -65,7 +61,7 @@ describe('#jsx-pdf', () => {
         <document>
           <content>{ 123 }{ 456 }</content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: ['123456'],
         },
@@ -85,7 +81,7 @@ describe('#jsx-pdf', () => {
         <document>
           <content><Component /></content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             { text: 'hello' },
@@ -106,7 +102,7 @@ describe('#jsx-pdf', () => {
         <document>
           <content><Component /></content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             {
@@ -124,7 +120,7 @@ describe('#jsx-pdf', () => {
     it('should support object', () => {
       const fragment = <text>test</text>;
 
-      expect(toPDFMake(<document><content>{fragment}</content></document>)).to.deep.equal({
+      expect(toPDFMake(<document><content>{fragment}</content></document>)).toEqual({
         content: {
           stack: [
             { text: 'test' },
@@ -146,7 +142,7 @@ describe('#jsx-pdf', () => {
             <text>Hello <Name />!</text>
           </content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             { text: 'Hello Mr. Test!' },
@@ -165,7 +161,7 @@ describe('#jsx-pdf', () => {
       <document>
         <content>Hello{ null }{ undefined }{ '' }{ 0 }{ NaN }{ false }!</content>
       </document>,
-    )).to.deep.equal({
+    )).toEqual({
       content: {
         stack: ['Hello!'],
       },
@@ -190,7 +186,7 @@ describe('#jsx-pdf', () => {
           <text>Hello<Null /><Undefined /><Empty /><Zero /><NAN /><False />!</text>
         </content>
       </document>,
-    )).to.deep.equal({
+    )).toEqual({
       content: {
         stack: [
           { text: 'Hello!' },
@@ -213,7 +209,7 @@ describe('#jsx-pdf', () => {
             <Component>hello</Component>
           </content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             { text: 'hello' },
@@ -244,7 +240,7 @@ describe('#jsx-pdf', () => {
             </content>
           </document>
         </Provider>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             { text: 'test' },
@@ -272,7 +268,7 @@ describe('#jsx-pdf', () => {
             <SiblingProvider />
           </content>
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             { text: 'first' },
@@ -304,7 +300,7 @@ describe('#jsx-pdf', () => {
             </content>
           </document>
         </Provider>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             { text: 'test' },
@@ -322,7 +318,7 @@ describe('#jsx-pdf', () => {
     it('should set page margin', () => {
       expect(toPDFMake(
         (<document margin={10} />),
-      )).to.deep.equal({
+      )).toEqual({
         pageMargins: 10,
         defaultStyle: {
           font: 'OpenSans',
@@ -340,19 +336,19 @@ describe('#jsx-pdf', () => {
             </content>
           </document>,
         );
-      }).to.throw(Error, /immediate descendents/);
+      }).toThrow(Error, /immediate descendents/);
     });
 
     it('should error if document is not the root element', () => {
       expect(() => {
         toPDFMake(<group><text>foobar</text></group>);
-      }).to.throw(Error, /root/);
+      }).toThrow(Error, /root/);
     });
 
     it('should error if a document appears below the top level', () => {
       expect(() => {
         toPDFMake(<document><content><document /></content></document>);
-      }).to.throw(Error, /root/);
+      }).toThrow(Error, /root/);
     });
 
     it('should not error if a top level element appears nested inside a function component', () => {
@@ -360,7 +356,7 @@ describe('#jsx-pdf', () => {
 
       expect(() => {
         toPDFMake(<document><Nested /></document>);
-      }).to.not.throw(Error);
+      }).not.toThrow(Error);
     });
 
     it('should resolve functional top level elements', () => {
@@ -370,7 +366,7 @@ describe('#jsx-pdf', () => {
         <document>
           <Component />
         </document>,
-      )).to.deep.equal({
+      )).toEqual({
         content: {
           stack: [
             { text: 'test' },
