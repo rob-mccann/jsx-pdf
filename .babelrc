@@ -1,6 +1,13 @@
 {
-  "presets" : ["es2015", "stage-3"],
+  "presets" : [
+    ["env", {
+      "targets": {
+        "node": "6"
+      }
+    }]
+  ],
   "plugins": [
-    [ "transform-react-jsx", { "pragma": "createElement" } ]
+    ["transform-object-rest-spread", { "useBuiltIns": true }],
+    ["transform-react-jsx", { "pragma": "createElement" }]
   ]
 }
