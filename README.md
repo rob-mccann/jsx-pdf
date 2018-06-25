@@ -3,6 +3,8 @@
 This library allows you to generate PDFs using a react-like JSX syntax.
 
 ```
+const render = createRenderer();
+
 const pdf = render(
   <document>
     <content>This will appear in my PDF!</content>
