@@ -131,12 +131,7 @@ export function toPDFMake(tag) {
     throw new Error(`The root element must resolve to a <document>, actually resolved to ${elementName}`);
   }
 
-  const result = {
-    defaultStyle: {
-      font: 'OpenSans',
-      fontSize: 10,
-    },
-  };
+  const result = {};
 
   children.forEach((child) => {
     const resolvedChild = resolve(child, context);
@@ -160,16 +155,27 @@ export function toPDFMake(tag) {
   return result;
 }
 
-export function render(elementJSON) {
-  // Recursively traverse the PDF template, converting the React-like syntax to pdfmake's syntax
-  const doc2 = toPDFMake(elementJSON);
-
-  // the argument here contains a list of fonts on the filesystem. see fonts.js
-  const pdf = (new PDFMake({
+export function createRenderer({ fontDescriptors, defaultStyle } = {}) {
+  const pdfMake = new PDFMake({
     OpenSans,
-  })).createPdfKitDocument(doc2);
+    ...fontDescriptors,
+  });
 
-  // return the stream for the caller to handle (usually by pushing straight to s3
-  // or to the filesystem
-  return pdf;
+  return function render(elementJSON) {
+    // Recursively traverse the PDF template, converting the React-like syntax to pdfmake's syntax
+    const doc = toPDFMake(elementJSON);
+
+    const pdf = pdfMake.createPdfKitDocument({
+      ...doc,
+      defaultStyle: {
+        font: 'OpenSans',
+        fontSize: 12,
+        ...defaultStyle,
+      },
+    });
+
+    // return the stream for the caller to handle (usually by pushing straight to s3
+    // or to the filesystem
+    return pdf;
+  };
 }

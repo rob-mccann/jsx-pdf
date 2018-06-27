@@ -1,6 +1,113 @@
-import { toPDFMake, createElement } from './index';
+import MockPDFMake from 'pdfmake';
+import { createElement, createRenderer, toPDFMake } from './index';
+
+jest.mock('pdfmake', () => jest.fn());
 
 describe('#jsx-pdf', () => {
+  describe('createRenderer', () => {
+    beforeEach(() => {
+      MockPDFMake.mockClear();
+    });
+
+    it('should return a function', () => {
+      expect(createRenderer()).toBeInstanceOf(Function);
+    });
+
+    it('should call pdfmake constructor', () => {
+      createRenderer();
+
+      expect(MockPDFMake).toHaveBeenCalled();
+    });
+
+    it('should pass open-sans to pdfmake constructor', () => {
+      createRenderer();
+
+      expect(MockPDFMake).toHaveBeenCalledWith({
+        OpenSans: {
+          normal: expect.stringContaining('OpenSans-Regular.ttf'),
+          bold: expect.stringContaining('OpenSans-Bold.ttf'),
+          italics: expect.stringContaining('OpenSans-Italic.ttf'),
+          bolditalics: expect.stringContaining('OpenSans-BoldItalic.ttf'),
+        },
+      });
+    });
+
+    it('should pass custom fonts to pdfmake constructor', () => {
+      createRenderer({
+        fontDescriptors: {
+          Font1: {
+            normal: 'fonts/Font1-Regular.ttf',
+            bold: 'fonts/Font1-Medium.ttf',
+            italics: 'fonts/Font1-Italic.ttf',
+            bolditalics: 'fonts/Font1-MediumItalic.ttf',
+          },
+          Font2: {
+            normal: 'fonts/Font2-Regular.ttf',
+            bold: 'fonts/Font2-Medium.ttf',
+            italics: 'fonts/Font2-Italic.ttf',
+            bolditalics: 'fonts/Font2-MediumItalic.ttf',
+          },
+        },
+      });
+
+      expect(MockPDFMake).toHaveBeenCalledWith({
+        OpenSans: {
+          normal: expect.stringContaining('OpenSans-Regular.ttf'),
+          bold: expect.stringContaining('OpenSans-Bold.ttf'),
+          italics: expect.stringContaining('OpenSans-Italic.ttf'),
+          bolditalics: expect.stringContaining('OpenSans-BoldItalic.ttf'),
+        },
+        Font1: {
+          normal: 'fonts/Font1-Regular.ttf',
+          bold: 'fonts/Font1-Medium.ttf',
+          italics: 'fonts/Font1-Italic.ttf',
+          bolditalics: 'fonts/Font1-MediumItalic.ttf',
+        },
+        Font2: {
+          normal: 'fonts/Font2-Regular.ttf',
+          bold: 'fonts/Font2-Medium.ttf',
+          italics: 'fonts/Font2-Italic.ttf',
+          bolditalics: 'fonts/Font2-MediumItalic.ttf',
+        },
+      });
+    });
+
+    describe('returned function', () => {
+      beforeEach(() => {
+        MockPDFMake.prototype.createPdfKitDocument = jest.fn();
+      });
+
+      it('should add style to pdfmake document', () => {
+        const render = createRenderer();
+        render(<document />);
+
+        expect(MockPDFMake.prototype.createPdfKitDocument).toHaveBeenCalledWith({
+          defaultStyle: {
+            font: 'OpenSans',
+            fontSize: 12,
+          },
+        });
+      });
+
+      it('should add custom style to pdfmake document', () => {
+        const render = createRenderer({
+          defaultStyle: {
+            font: 'FontCustom',
+            fontSize: 24,
+          },
+        });
+        render(<document />);
+
+        expect(MockPDFMake.prototype.createPdfKitDocument).toHaveBeenCalledWith({
+          defaultStyle: {
+            font: 'FontCustom',
+            fontSize: 24,
+          },
+        });
+      });
+    });
+  });
+
   describe('basics', () => {
     it('should return the pdfmake document definition for simple components', () => {
       expect(toPDFMake(
@@ -10,10 +117,6 @@ describe('#jsx-pdf', () => {
       )).toEqual({
         content: {
           stack: ['hello'],
-        },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
         },
       });
     });
@@ -33,10 +136,6 @@ describe('#jsx-pdf', () => {
             { text: 'second' },
           ],
         },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
-        },
       });
     });
 
@@ -49,10 +148,6 @@ describe('#jsx-pdf', () => {
         content: {
           stack: [123],
         },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
-        },
       });
     });
 
@@ -64,10 +159,6 @@ describe('#jsx-pdf', () => {
       )).toEqual({
         content: {
           stack: ['123456'],
-        },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
         },
       });
     });
@@ -86,10 +177,6 @@ describe('#jsx-pdf', () => {
           stack: [
             { text: 'hello' },
           ],
-        },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
         },
       });
     });
@@ -110,10 +197,6 @@ describe('#jsx-pdf', () => {
             },
           ],
         },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
-        },
       });
     });
 
@@ -125,10 +208,6 @@ describe('#jsx-pdf', () => {
           stack: [
             { text: 'test' },
           ],
-        },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
         },
       });
     });
@@ -148,10 +227,6 @@ describe('#jsx-pdf', () => {
             { text: 'Hello Mr. Test!' },
           ],
         },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
-        },
       });
     });
   });
@@ -164,10 +239,6 @@ describe('#jsx-pdf', () => {
     )).toEqual({
       content: {
         stack: ['Hello!'],
-      },
-      defaultStyle: {
-        font: 'OpenSans',
-        fontSize: 10,
       },
     });
   });
@@ -192,10 +263,6 @@ describe('#jsx-pdf', () => {
           { text: 'Hello!' },
         ],
       },
-      defaultStyle: {
-        font: 'OpenSans',
-        fontSize: 10,
-      },
     });
   });
 
@@ -214,10 +281,6 @@ describe('#jsx-pdf', () => {
           stack: [
             { text: 'hello' },
           ],
-        },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
         },
       });
     });
@@ -246,10 +309,6 @@ describe('#jsx-pdf', () => {
             { text: 'test' },
           ],
         },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
-        },
       });
     });
 
@@ -274,10 +333,6 @@ describe('#jsx-pdf', () => {
             { text: 'first' },
             { text: 'it worked' },
           ],
-        },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
         },
       });
     });
@@ -306,10 +361,6 @@ describe('#jsx-pdf', () => {
             { text: 'test' },
           ],
         },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
-        },
       });
     });
   });
@@ -320,10 +371,6 @@ describe('#jsx-pdf', () => {
         (<document margin={10} />),
       )).toEqual({
         pageMargins: 10,
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
-        },
       });
     });
 
@@ -371,10 +418,6 @@ describe('#jsx-pdf', () => {
           stack: [
             { text: 'test' },
           ],
-        },
-        defaultStyle: {
-          font: 'OpenSans',
-          fontSize: 10,
         },
       });
     });
