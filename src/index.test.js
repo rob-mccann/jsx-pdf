@@ -422,4 +422,130 @@ describe('#jsx-pdf', () => {
       });
     });
   });
+
+  describe('unordered list', () => {
+    it('should be converted', () => {
+      expect(toPDFMake(
+        <document>
+          <content>
+            <ul>
+              <text>item 1</text>
+              <text>item 2</text>
+            </ul>
+          </content>
+        </document>,
+      )).toEqual({
+        content: {
+          stack: [
+            {
+              ul: [
+                { text: 'item 1' },
+                { text: 'item 2' },
+              ],
+            },
+          ],
+        },
+      });
+    });
+
+    it('should have passed attributes', () => {
+      expect(toPDFMake(
+        <document>
+          <content>
+            <ul
+              type="square"
+              separator={['(', ')']}
+              start={50}
+              color="blue"
+              markerColor="red"
+              reversed
+            >
+              <text>item 1</text>
+              <text>item 2</text>
+            </ul>
+          </content>
+        </document>,
+      )).toEqual({
+        content: {
+          stack: [
+            {
+              ul: [
+                { text: 'item 1' },
+                { text: 'item 2' },
+              ],
+              type: 'square',
+              separator: ['(', ')'],
+              start: 50,
+              color: 'blue',
+              markerColor: 'red',
+              reversed: true,
+            },
+          ],
+        },
+      });
+    });
+  });
+
+  describe('ordered list', () => {
+    it('should be converted', () => {
+      expect(toPDFMake(
+        <document>
+          <content>
+            <ol>
+              <text>item 1</text>
+              <text>item 2</text>
+            </ol>
+          </content>
+        </document>,
+      )).toEqual({
+        content: {
+          stack: [
+            {
+              ol: [
+                { text: 'item 1' },
+                { text: 'item 2' },
+              ],
+            },
+          ],
+        },
+      });
+    });
+
+    it('should have passed attributes', () => {
+      expect(toPDFMake(
+        <document>
+          <content>
+            <ol
+              type="lower-roman"
+              separator={['(', ')']}
+              start={50}
+              color="blue"
+              markerColor="red"
+              reversed
+            >
+              <text>item 1</text>
+              <text>item 2</text>
+            </ol>
+          </content>
+        </document>,
+      )).toEqual({
+        content: {
+          stack: [
+            {
+              ol: [
+                { text: 'item 1' },
+                { text: 'item 2' },
+              ],
+              type: 'lower-roman',
+              separator: ['(', ')'],
+              start: 50,
+              color: 'blue',
+              markerColor: 'red',
+              reversed: true,
+            },
+          ],
+        },
+      });
+    });
+  });
 });
