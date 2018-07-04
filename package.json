@@ -17,7 +17,8 @@
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
     "lint": "eslint src",
     "test": "yarn lint && jest",
-    "prepublish": "yarn test && yarn build"
+    "prepublish": "yarn test && yarn build",
+    "prettier": "prettier --write src/**/*.js"
   },
   "dependencies": {
     "lodash": "^4.17.10",
@@ -29,13 +30,19 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.7.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.12.0",
+    "eslint": "^4.13.1",
+    "eslint-config-schibsted": "^6.0.0",
+    "eslint-config-schibsted-modules": "^6.0.0",
+    "eslint-config-schibsted-node": "^6.0.0",
+    "eslint-config-schibsted-react": "^6.0.0",
+    "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.17.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^2.4.0",
     "eslint-plugin-react": "^7.9.1",
+    "eslint-plugin-unicorn": "^3.0.1",
     "jest": "^23.1.0",
-    "jest-watch-typeahead": "^0.1.0"
+    "jest-watch-typeahead": "^0.1.0",
+    "prettier": "^1.9.2"
   }
 }

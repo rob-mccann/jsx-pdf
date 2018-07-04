@@ -1,5 +1,5 @@
 import MockPDFMake from 'pdfmake';
-import { createElement, createRenderer, toPDFMake } from './index';
+import { createElement, createRenderer, toPDFMake } from '.';
 
 jest.mock('pdfmake', () => jest.fn());
 
@@ -81,12 +81,14 @@ describe('#jsx-pdf', () => {
         const render = createRenderer();
         render(<document />);
 
-        expect(MockPDFMake.prototype.createPdfKitDocument).toHaveBeenCalledWith({
-          defaultStyle: {
-            font: 'OpenSans',
-            fontSize: 12,
+        expect(MockPDFMake.prototype.createPdfKitDocument).toHaveBeenCalledWith(
+          {
+            defaultStyle: {
+              font: 'OpenSans',
+              fontSize: 12,
+            },
           },
-        });
+        );
       });
 
       it('should add custom style to pdfmake document', () => {
@@ -98,23 +100,27 @@ describe('#jsx-pdf', () => {
         });
         render(<document />);
 
-        expect(MockPDFMake.prototype.createPdfKitDocument).toHaveBeenCalledWith({
-          defaultStyle: {
-            font: 'FontCustom',
-            fontSize: 24,
+        expect(MockPDFMake.prototype.createPdfKitDocument).toHaveBeenCalledWith(
+          {
+            defaultStyle: {
+              font: 'FontCustom',
+              fontSize: 24,
+            },
           },
-        });
+        );
       });
     });
   });
 
   describe('basics', () => {
     it('should return the pdfmake document definition for simple components', () => {
-      expect(toPDFMake(
-        <document>
-          <content>hello</content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>hello</content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
           stack: ['hello'],
         },
@@ -122,29 +128,30 @@ describe('#jsx-pdf', () => {
     });
 
     it('should return the pdfmake document definition for complex trees of components', () => {
-      expect(toPDFMake(
-        <document>
-          <content>
-            <text>first</text>
-            <text>second</text>
-          </content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <text>first</text>
+              <text>second</text>
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'first' },
-            { text: 'second' },
-          ],
+          stack: [{ text: 'first' }, { text: 'second' }],
         },
       });
     });
 
     it('should support numbers inside jsx', () => {
-      expect(toPDFMake(
-        <document>
-          <content>{ 123 }</content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>{123}</content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
           stack: [123],
         },
@@ -152,11 +159,16 @@ describe('#jsx-pdf', () => {
     });
 
     it('should concatenate consecutive numbers rather than adding them', () => {
-      expect(toPDFMake(
-        <document>
-          <content>{ 123 }{ 456 }</content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              {123}
+              {456}
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
           stack: ['123456'],
         },
@@ -166,30 +178,40 @@ describe('#jsx-pdf', () => {
 
   describe('component functions', () => {
     it('should traverse composite components', () => {
-      const Component = () => (<text>hello</text>);
+      const Component = () => <text>hello</text>;
 
-      expect(toPDFMake(
-        <document>
-          <content><Component /></content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <Component />
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'hello' },
-          ],
+          stack: [{ text: 'hello' }],
         },
       });
     });
 
     it('should traverse nested composite components', () => {
-      const ChildComponent = () => (<text>hello</text>);
-      const Component = () => (<group><ChildComponent /></group>);
+      const ChildComponent = () => <text>hello</text>;
+      const Component = () => (
+        <group>
+          <ChildComponent />
+        </group>
+      );
 
-      expect(toPDFMake(
-        <document>
-          <content><Component /></content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <Component />
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
           stack: [
             {
@@ -203,40 +225,55 @@ describe('#jsx-pdf', () => {
     it('should support object', () => {
       const fragment = <text>test</text>;
 
-      expect(toPDFMake(<document><content>{fragment}</content></document>)).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>{fragment}</content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'test' },
-          ],
+          stack: [{ text: 'test' }],
         },
       });
     });
 
     it('should join resulting text elements together', () => {
-      const Name = () => ('Mr. Test');
+      const Name = () => 'Mr. Test';
 
-      expect(toPDFMake(
-        <document>
-          <content>
-            <text>Hello <Name />!</text>
-          </content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <text>
+                Hello <Name />!
+              </text>
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'Hello Mr. Test!' },
-          ],
+          stack: [{ text: 'Hello Mr. Test!' }],
         },
       });
     });
   });
 
   it('should ignore falsy values', () => {
-    expect(toPDFMake(
-      <document>
-        <content>Hello{ null }{ undefined }{ '' }{ 0 }{ NaN }{ false }!</content>
-      </document>,
-    )).toEqual({
+    expect(
+      toPDFMake(
+        <document>
+          <content>
+            Hello{null}
+            {undefined}
+            {''}
+            {0}
+            {NaN}
+            {false}!
+          </content>
+        </document>,
+      ),
+    ).toEqual({
       content: {
         stack: ['Hello!'],
       },
@@ -251,17 +288,24 @@ describe('#jsx-pdf', () => {
     const NAN = () => NaN;
     const False = () => () => false;
 
-    expect(toPDFMake(
-      <document>
-        <content>
-          <text>Hello<Null /><Undefined /><Empty /><Zero /><NAN /><False />!</text>
-        </content>
-      </document>,
-    )).toEqual({
+    expect(
+      toPDFMake(
+        <document>
+          <content>
+            <text>
+              Hello<Null />
+              <Undefined />
+              <Empty />
+              <Zero />
+              <NAN />
+              <False />!
+            </text>
+          </content>
+        </document>,
+      ),
+    ).toEqual({
       content: {
-        stack: [
-          { text: 'Hello!' },
-        ],
+        stack: [{ text: 'Hello!' }],
       },
     });
   });
@@ -270,17 +314,17 @@ describe('#jsx-pdf', () => {
     it('should allow higher order components', () => {
       const Component = attributes => <text>{attributes.children}</text>;
 
-      expect(toPDFMake(
-        <document>
-          <content>
-            <Component>hello</Component>
-          </content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <Component>hello</Component>
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'hello' },
-          ],
+          stack: [{ text: 'hello' }],
         },
       });
     });
@@ -293,21 +337,23 @@ describe('#jsx-pdf', () => {
         return attributes.children[0];
       };
 
-      const MyContextualisedComponent = (attributes, context) => <text>{ context.mytest }</text>;
+      const MyContextualisedComponent = (attributes, context) => (
+        <text>{context.mytest}</text>
+      );
 
-      expect(toPDFMake(
-        <Provider>
-          <document>
-            <content>
-              <MyContextualisedComponent />
-            </content>
-          </document>
-        </Provider>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <Provider>
+            <document>
+              <content>
+                <MyContextualisedComponent />
+              </content>
+            </document>
+          </Provider>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'test' },
-          ],
+          stack: [{ text: 'test' }],
         },
       });
     });
@@ -315,28 +361,28 @@ describe('#jsx-pdf', () => {
     it('should not pass context to siblings', () => {
       const Provider = (attributes, context, updateContext) => {
         updateContext({ mytest: 'this should not exist in the sibling' });
-        return (<text>first</text>);
+        return <text>first</text>;
       };
 
-      const SiblingProvider = (attributes, context) => <text>{ context.mytest || 'it worked' }</text>;
+      const SiblingProvider = (attributes, context) => (
+        <text>{context.mytest || 'it worked'}</text>
+      );
 
-      expect(toPDFMake(
-        <document>
-          <content>
-            <Provider />
-            <SiblingProvider />
-          </content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <Provider />
+              <SiblingProvider />
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'first' },
-            { text: 'it worked' },
-          ],
+          stack: [{ text: 'first' }, { text: 'it worked' }],
         },
       });
     });
-
 
     it('should pass context to grandchildren', () => {
       const Provider = (attributes, context, updateContext) => {
@@ -344,22 +390,24 @@ describe('#jsx-pdf', () => {
         return attributes.children[0];
       };
 
-      const MyContextualisedComponent = (attributes, context) => <text>{ context.mytest }</text>;
+      const MyContextualisedComponent = (attributes, context) => (
+        <text>{context.mytest}</text>
+      );
       const MyParentComponent = () => <MyContextualisedComponent />;
 
-      expect(toPDFMake(
-        <Provider>
-          <document>
-            <content>
-              <MyParentComponent />
-            </content>
-          </document>
-        </Provider>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <Provider>
+            <document>
+              <content>
+                <MyParentComponent />
+              </content>
+            </document>
+          </Provider>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'test' },
-          ],
+          stack: [{ text: 'test' }],
         },
       });
     });
@@ -367,9 +415,7 @@ describe('#jsx-pdf', () => {
 
   describe('document', () => {
     it('should set page margin', () => {
-      expect(toPDFMake(
-        (<document margin={10} />),
-      )).toEqual({
+      expect(toPDFMake(<document margin={10} />)).toEqual({
         pageMargins: 10,
       });
     });
@@ -379,7 +425,9 @@ describe('#jsx-pdf', () => {
         toPDFMake(
           <document>
             <content>
-              <group><header /></group>
+              <group>
+                <header />
+              </group>
             </content>
           </document>,
         );
@@ -388,36 +436,54 @@ describe('#jsx-pdf', () => {
 
     it('should error if document is not the root element', () => {
       expect(() => {
-        toPDFMake(<group><text>foobar</text></group>);
+        toPDFMake(
+          <group>
+            <text>foobar</text>
+          </group>,
+        );
       }).toThrow(Error, /root/);
     });
 
     it('should error if a document appears below the top level', () => {
       expect(() => {
-        toPDFMake(<document><content><document /></content></document>);
+        toPDFMake(
+          <document>
+            <content>
+              <document />
+            </content>
+          </document>,
+        );
       }).toThrow(Error, /root/);
     });
 
     it('should not error if a top level element appears nested inside a function component', () => {
-      const Nested = () => (<content />);
+      const Nested = () => <content />;
 
       expect(() => {
-        toPDFMake(<document><Nested /></document>);
+        toPDFMake(
+          <document>
+            <Nested />
+          </document>,
+        );
       }).not.toThrow(Error);
     });
 
     it('should resolve functional top level elements', () => {
-      const Component = () => (<content><text>test</text></content>);
+      const Component = () => (
+        <content>
+          <text>test</text>
+        </content>
+      );
 
-      expect(toPDFMake(
-        <document>
-          <Component />
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <Component />
+          </document>,
+        ),
+      ).toEqual({
         content: {
-          stack: [
-            { text: 'test' },
-          ],
+          stack: [{ text: 'test' }],
         },
       });
     });
@@ -425,23 +491,22 @@ describe('#jsx-pdf', () => {
 
   describe('unordered list', () => {
     it('should be converted', () => {
-      expect(toPDFMake(
-        <document>
-          <content>
-            <ul>
-              <text>item 1</text>
-              <text>item 2</text>
-            </ul>
-          </content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <ul>
+                <text>item 1</text>
+                <text>item 2</text>
+              </ul>
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
           stack: [
             {
-              ul: [
-                { text: 'item 1' },
-                { text: 'item 2' },
-              ],
+              ul: [{ text: 'item 1' }, { text: 'item 2' }],
             },
           ],
         },
@@ -449,30 +514,29 @@ describe('#jsx-pdf', () => {
     });
 
     it('should have passed attributes', () => {
-      expect(toPDFMake(
-        <document>
-          <content>
-            <ul
-              type="square"
-              separator={['(', ')']}
-              start={50}
-              color="blue"
-              markerColor="red"
-              reversed
-            >
-              <text>item 1</text>
-              <text>item 2</text>
-            </ul>
-          </content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <ul
+                type="square"
+                separator={['(', ')']}
+                start={50}
+                color="blue"
+                markerColor="red"
+                reversed
+              >
+                <text>item 1</text>
+                <text>item 2</text>
+              </ul>
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
           stack: [
             {
-              ul: [
-                { text: 'item 1' },
-                { text: 'item 2' },
-              ],
+              ul: [{ text: 'item 1' }, { text: 'item 2' }],
               type: 'square',
               separator: ['(', ')'],
               start: 50,
@@ -488,23 +552,22 @@ describe('#jsx-pdf', () => {
 
   describe('ordered list', () => {
     it('should be converted', () => {
-      expect(toPDFMake(
-        <document>
-          <content>
-            <ol>
-              <text>item 1</text>
-              <text>item 2</text>
-            </ol>
-          </content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <ol>
+                <text>item 1</text>
+                <text>item 2</text>
+              </ol>
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
           stack: [
             {
-              ol: [
-                { text: 'item 1' },
-                { text: 'item 2' },
-              ],
+              ol: [{ text: 'item 1' }, { text: 'item 2' }],
             },
           ],
         },
@@ -512,30 +575,29 @@ describe('#jsx-pdf', () => {
     });
 
     it('should have passed attributes', () => {
-      expect(toPDFMake(
-        <document>
-          <content>
-            <ol
-              type="lower-roman"
-              separator={['(', ')']}
-              start={50}
-              color="blue"
-              markerColor="red"
-              reversed
-            >
-              <text>item 1</text>
-              <text>item 2</text>
-            </ol>
-          </content>
-        </document>,
-      )).toEqual({
+      expect(
+        toPDFMake(
+          <document>
+            <content>
+              <ol
+                type="lower-roman"
+                separator={['(', ')']}
+                start={50}
+                color="blue"
+                markerColor="red"
+                reversed
+              >
+                <text>item 1</text>
+                <text>item 2</text>
+              </ol>
+            </content>
+          </document>,
+        ),
+      ).toEqual({
         content: {
           stack: [
             {
-              ol: [
-                { text: 'item 1' },
-                { text: 'item 2' },
-              ],
+              ol: [{ text: 'item 1' }, { text: 'item 2' }],
               type: 'lower-roman',
               separator: ['(', ')'],
               start: 50,
