@@ -152,7 +152,7 @@ const doc = (
 
 ### Styling
 
-Styling can be done by adding appropriate attributes to tags. Supported attributes can be found [here](http://pdfmake.org/playground.html). It might be a good idea to group style-related attributes together and use the spread syntax.
+Styling can be done by adding appropriate attributes to tags. It might be a good idea to group style-related attributes together and use the spread syntax.
 
 ```
 import { createElement } from 'jsx-to-pdf';
@@ -211,6 +211,187 @@ const doc = (
 );
 ```
 
+## Document primitives
+
+This section describes basic elements provided by the library. More information about supported attributes and advanced examples can be found [here](http://pdfmake.org/playground.html).
+
+### Top elements
+
+Each document has to be enclosed within `document` tag with nested `content`, and optional `header` and `footer`.
+
+```
+import { createElement } from 'jsx-to-pdf';
+
+const doc = (
+  <document>
+    <header>Greeting</header>
+    <content>Hello, Bob!</content>
+    <footer>JSX-TO-PDF, Inc.</footer>
+  </document>
+);
+```
+
+### Paragraphs
+
+Paragraphs are defined using `text` tag.
+
+```
+import { createElement } from 'jsx-to-pdf';
+
+const doc = (
+  <document>
+    <content>
+      <text>
+        This sentence will be rendered
+        as one paragraph,
+
+        even though there are
+
+        line
+
+
+        breaks.
+      </text>
+      <text>This is another paragraph.</text>
+    </content>
+  </document>
+);
+```
+
+In order to apply styling to a group of paragraphs, they can be wrapped with a `stack` tag.
+
+```
+import { createElement } from 'jsx-to-pdf';
+
+const doc = (
+  <document>
+    <content>
+      <stack color="red">
+        <text>First red parahraph.</text>
+        <text>Second red parahraph.</text>
+      </stack>
+      <text color="blue">Blue parahraph.</text>
+    </content>
+  </document>
+);
+```
+
+### Columns
+
+Elements nested in `columns` tag will be stacked horizontally.
+
+```
+import { createElement } from 'jsx-to-pdf';
+
+const doc = (
+  <document>
+    <content>
+      <columns columnGap={10}>
+        <text width={100}>Fixed width column</text>
+        <text width="10%">Percentage width column</text>
+        <text width="auto">Column that adjusts width based on the content</text>
+        <text width="*">Column that fills the remaining space</text>
+      </columns>
+    </content>
+  </document>
+);
+```
+
+### Lists
+
+Both ordered and unordered lists are supported.
+
+```
+import { createElement } from 'jsx-to-pdf';
+
+const docWithOrderedList = (
+  <document>
+    <content>
+      <ol
+        reversed
+        start={10}
+        separator={['(', ')']}
+        type="lower-roman"
+      >
+        <text>Item 1</text>
+        <text>Item 2</text>
+        <text>Item 3</text>
+      </ol>
+    </content>
+  </document>
+);
+
+const docWithUnorderedList = (
+  <document>
+    <content>
+      <ul
+        color="blue"
+        markerColor="red"
+        type="square"
+      >
+        <text>Item 1</text>
+        <text>Item 2</text>
+        <text>Item 3</text>
+      </ul>
+    </content>
+  </document>
+);
+```
+
+### Tables
+
+`table` tag provides a simple way of creating table layouts.
+
+```
+const leftCellStyle = {
+  color: 'grey',
+};
+
+const doc = (
+  <document>
+    <content>
+      <table widths={[100, '*', 'auto']} headerRows={1} layout="headerLineOnly">
+        <row>
+          <cell>Fixed width column</cell>
+          <cell>Column that fills the remaining space</cell>
+          <cell>Column that adjusts width based on the content</cell>
+        </row>
+        <row>
+          <cell {...leftCellStyle}>Cell 1.1</cell>
+          <cell>Cell 1.2</cell>
+          <cell>Cell 1.3</cell>
+        </row>
+        <row>
+          <cell {...leftCellStyle}>Cell 2.1</cell>
+          <cell>Cell 2.2</cell>
+          <cell>Cell 2.3</cell>
+        </row>
+      </table>
+    </content>
+  </document>
+);
+```
+
+### Images
+
+`image` supports JPEG and PNG formats.
+
+```
+import { createElement } from 'jsx-to-pdf';
+
+const doc = (
+  <document>
+    <content>
+      <image
+        src="/home/bob/photos/Bob.png"
+        width={150}
+        height={150}
+      />
+    </content>
+  </document>
+);
+```
+
 ## API
 
 ### createRenderer
@@ -236,7 +417,7 @@ const render = createRenderer({
 
 #### defaultStyle
 
-The library defaults to using OpenSans 14pt, which can be overridden in the factory function.
+The library defaults to using OpenSans 12pt, which can be overridden in the factory function.
 
 ```
 const render = createRenderer({
