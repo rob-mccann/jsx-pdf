@@ -10,7 +10,8 @@ import PDFMake from 'pdfmake';
 import OpenSans from './fonts';
 
 const isTextElement = tag => typeof tag === 'string' || typeof tag === 'number';
-const isTopLevelElement = elementName => ['header', 'content', 'footer'].includes(elementName);
+const isTopLevelElement = elementName =>
+  ['header', 'content', 'footer'].includes(elementName);
 
 function updateContext(context, overrides) {
   return Object.assign(context, overrides);
@@ -64,11 +65,15 @@ function resolveChildren(tag, parentContext, isTopLevel) {
   const { elementName, children = [], attributes } = resolvedTag;
 
   if (!isTopLevel && isTopLevelElement(elementName)) {
-    throw new Error('<header>, <content> and <footer> elements can only appear as immediate descendents of the <document>');
+    throw new Error(
+      '<header>, <content> and <footer> elements can only appear as immediate descendents of the <document>',
+    );
   }
 
   if (isTopLevel && !isTopLevelElement(elementName)) {
-    throw new Error(`The <document> element can only contain <header>, <content>, and <footer> elements but found ${elementName}`);
+    throw new Error(
+      `The <document> element can only contain <header>, <content>, and <footer> elements but found ${elementName}`,
+    );
   }
 
   const resolvedChildren = children.reduce((acc, child) => {
@@ -110,9 +115,15 @@ function resolveChildren(tag, parentContext, isTopLevel) {
     case 'columns':
       return { columns: resolvedChildren, ...attributes };
     case 'image':
-      return { image: attributes.src, ...(omit(attributes, 'src')) };
+      return { image: attributes.src, ...omit(attributes, 'src') };
     case 'table':
-      return { table: { body: resolvedChildren, ...(pick(attributes, ['headerRows', 'widths'])) }, ...attributes };
+      return {
+        table: {
+          body: resolvedChildren,
+          ...pick(attributes, ['headerRows', 'widths']),
+        },
+        ...attributes,
+      };
     case 'row':
       return [...resolvedChildren];
     case 'ul': {
@@ -134,14 +145,20 @@ export function toPDFMake(tag) {
   const { children, elementName, attributes = {} } = resolvedTag;
 
   if (elementName !== 'document') {
-    throw new Error(`The root element must resolve to a <document>, actually resolved to ${elementName}`);
+    throw new Error(
+      `The root element must resolve to a <document>, actually resolved to ${elementName}`,
+    );
   }
 
   const result = {};
 
-  children.forEach((child) => {
+  children.forEach(child => {
     const resolvedChild = resolve(child, context);
-    result[resolvedChild.elementName] = resolveChildren(resolvedChild, context, true);
+    result[resolvedChild.elementName] = resolveChildren(
+      resolvedChild,
+      context,
+      true,
+    );
   });
 
   if (attributes.size) {
