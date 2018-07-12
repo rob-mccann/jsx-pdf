@@ -125,7 +125,7 @@ function resolveChildren(tag, parentContext, isTopLevel) {
         ...attributes,
       };
     case 'row':
-      return [...resolvedChildren];
+      return resolvedChildren;
     case 'ul': {
       return { ul: resolvedChildren, ...attributes };
     }
