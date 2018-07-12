@@ -104,7 +104,7 @@ function resolveChildren(tag, parentContext, isTopLevel) {
     case 'content':
     case 'footer':
     case 'stack':
-    case 'group':
+    case 'column':
     case 'cell':
       return { stack: resolvedChildren, ...attributes };
     case 'text':
