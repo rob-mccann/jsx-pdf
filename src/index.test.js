@@ -198,9 +198,9 @@ describe('#jsx-pdf', () => {
     it('should traverse nested composite components', () => {
       const ChildComponent = () => <text>hello</text>;
       const Component = () => (
-        <group>
+        <stack>
           <ChildComponent />
-        </group>
+        </stack>
       );
 
       expect(
@@ -425,9 +425,9 @@ describe('#jsx-pdf', () => {
         toPDFMake(
           <document>
             <content>
-              <group>
+              <stack>
                 <header />
-              </group>
+              </stack>
             </content>
           </document>,
         );
@@ -437,9 +437,9 @@ describe('#jsx-pdf', () => {
     it('should error if document is not the root element', () => {
       expect(() => {
         toPDFMake(
-          <group>
+          <stack>
             <text>foobar</text>
-          </group>,
+          </stack>,
         );
       }).toThrow(Error, /root/);
     });

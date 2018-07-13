@@ -49,11 +49,11 @@ const doc = (
 import { createElement } from 'jsx-to-pdf';
 
 const GroupGreeting = ({ names }) => (
-  <group>
+  <stack>
     {names.map(name => (
       <Greeting name={name} />
     ))}
-  </group>
+  </stack>
 );
 
 const doc = (
@@ -75,10 +75,10 @@ const Signature = () => (
 );
 
 const SignedGreeting = ({ name }) => (
-  <group>
+  <stack>
     {name && <Greeting name={name} />}
     <Signature />
-  </group>
+  </stack>
 );
 
 const doc = (
@@ -100,10 +100,10 @@ const AnonymousGreeting = () => (
 );
 
 const SignedGreeting = ({ name }) => (
-  <group>
+  <stack>
     {name ? <Greeting name={name} /> : <AnonymousGreeting />}
     <Signature />
-  </group>
+  </stack>
 );
 
 const doc = (
@@ -134,10 +134,10 @@ const SignedGreeting = ({ name }) => {
   }
 
   return (
-    <group>
+    <stack>
       {greeting}
       <Signature />
-    </group>
+    </stack>
   );
 }
 
@@ -287,10 +287,10 @@ const doc = (
   <document>
     <content>
       <columns columnGap={10}>
-        <text width={100}>Fixed width column</text>
-        <text width="10%">Percentage width column</text>
-        <text width="auto">Column that adjusts width based on the content</text>
-        <text width="*">Column that fills the remaining space</text>
+        <column width={100}>Fixed width column</column>
+        <column width="10%">Percentage width column</column>
+        <column width="auto">Column that adjusts width based on the content</column>
+        <column width="*">Column that fills the remaining space</column>
       </columns>
     </content>
   </document>
@@ -433,6 +433,7 @@ const render = createRenderer({
 This function converts JSX to object representation. Every time JSX syntax is used, the function has to be made available. The functionality directly depends on `plugin-transform-react-jsx` package and Babel set up in the project.
 
 Example `.babelrc` file:
+
 ```
 {
   "presets" : [
@@ -443,7 +444,7 @@ Example `.babelrc` file:
     }]
   ],
   "plugins": [
-    ["transform-react-jsx", { 
+    ["transform-react-jsx", {
       "pragma": "createElement"
     }]
   ]
