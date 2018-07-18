@@ -122,16 +122,14 @@ function resolveChildren(tag, parentContext, isTopLevel) {
           body: resolvedChildren,
           ...pick(attributes, ['headerRows', 'widths']),
         },
-        ...attributes,
+        ...omit(attributes, ['headerRows', 'widths']),
       };
     case 'row':
       return resolvedChildren;
-    case 'ul': {
+    case 'ul':
       return { ul: resolvedChildren, ...attributes };
-    }
-    case 'ol': {
+    case 'ol':
       return { ol: resolvedChildren, ...attributes };
-    }
     case 'document':
       throw new Error('<document> can only appear as the root element');
     default:
