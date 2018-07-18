@@ -489,124 +489,618 @@ describe('#jsx-pdf', () => {
     });
   });
 
-  describe('unordered list', () => {
-    it('should be converted', () => {
-      expect(
-        toPDFMake(
-          <document>
-            <content>
-              <ul>
-                <text>item 1</text>
-                <text>item 2</text>
-              </ul>
-            </content>
-          </document>,
-        ),
-      ).toEqual({
-        content: {
-          stack: [
-            {
-              ul: [{ text: 'item 1' }, { text: 'item 2' }],
-            },
-          ],
-        },
+  describe('primitives', () => {
+    describe('header', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <header>
+                <text>test header</text>
+              </header>
+            </document>,
+          ),
+        ).toEqual({
+          header: {
+            stack: [{ text: 'test header' }],
+          },
+        });
+      });
+
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <header fontSize={18} bold>
+                <text>test header</text>
+              </header>
+            </document>,
+          ),
+        ).toEqual({
+          header: {
+            stack: [{ text: 'test header' }],
+            fontSize: 18,
+            bold: true,
+          },
+        });
       });
     });
 
-    it('should have passed attributes', () => {
-      expect(
-        toPDFMake(
-          <document>
-            <content>
-              <ul
-                type="square"
-                separator={['(', ')']}
-                start={50}
-                color="blue"
-                markerColor="red"
-                reversed
-              >
-                <text>item 1</text>
-                <text>item 2</text>
-              </ul>
-            </content>
-          </document>,
-        ),
-      ).toEqual({
-        content: {
-          stack: [
-            {
-              ul: [{ text: 'item 1' }, { text: 'item 2' }],
-              type: 'square',
-              separator: ['(', ')'],
-              start: 50,
-              color: 'blue',
-              markerColor: 'red',
-              reversed: true,
-            },
-          ],
-        },
+    describe('content', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <text>test content</text>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [{ text: 'test content' }],
+          },
+        });
       });
-    });
-  });
 
-  describe('ordered list', () => {
-    it('should be converted', () => {
-      expect(
-        toPDFMake(
-          <document>
-            <content>
-              <ol>
-                <text>item 1</text>
-                <text>item 2</text>
-              </ol>
-            </content>
-          </document>,
-        ),
-      ).toEqual({
-        content: {
-          stack: [
-            {
-              ol: [{ text: 'item 1' }, { text: 'item 2' }],
-            },
-          ],
-        },
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content fontSize={18} bold>
+                <text>test content</text>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [{ text: 'test content' }],
+            fontSize: 18,
+            bold: true,
+          },
+        });
       });
     });
 
-    it('should have passed attributes', () => {
-      expect(
-        toPDFMake(
-          <document>
-            <content>
-              <ol
-                type="lower-roman"
-                separator={['(', ')']}
-                start={50}
-                color="blue"
-                markerColor="red"
-                reversed
-              >
-                <text>item 1</text>
-                <text>item 2</text>
-              </ol>
-            </content>
-          </document>,
-        ),
-      ).toEqual({
-        content: {
-          stack: [
-            {
-              ol: [{ text: 'item 1' }, { text: 'item 2' }],
-              type: 'lower-roman',
-              separator: ['(', ')'],
-              start: 50,
-              color: 'blue',
-              markerColor: 'red',
-              reversed: true,
+    describe('footer', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <footer>
+                <text>test footer</text>
+              </footer>
+            </document>,
+          ),
+        ).toEqual({
+          footer: {
+            stack: [{ text: 'test footer' }],
+          },
+        });
+      });
+
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <footer fontSize={18} bold>
+                <text>test footer</text>
+              </footer>
+            </document>,
+          ),
+        ).toEqual({
+          footer: {
+            stack: [{ text: 'test footer' }],
+            fontSize: 18,
+            bold: true,
+          },
+        });
+      });
+    });
+
+    describe('text', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <text>test text</text>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                text: 'test text',
+              },
+            ],
+          },
+        });
+      });
+
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <text color="blue" bold>
+                  test text
+                </text>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                text: 'test text',
+                color: 'blue',
+                bold: true,
+              },
+            ],
+          },
+        });
+      });
+    });
+
+    describe('image', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <image src="/users/bob/photo.png" />
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                image: '/users/bob/photo.png',
+              },
+            ],
+          },
+        });
+      });
+
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <image src="/users/bob/photo.png" margin={[0, 40, 10, 30]} />
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                image: '/users/bob/photo.png',
+                margin: [0, 40, 10, 30],
+              },
+            ],
+          },
+        });
+      });
+    });
+
+    describe('stack', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <stack>
+                  <text>test item 1</text>
+                  <text>test item 2</text>
+                </stack>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                stack: [{ text: 'test item 1' }, { text: 'test item 2' }],
+              },
+            ],
+          },
+        });
+      });
+
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <stack fontSize={24} color="red">
+                  <text>test item 1</text>
+                  <text>test item 2</text>
+                </stack>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                stack: [{ text: 'test item 1' }, { text: 'test item 2' }],
+                fontSize: 24,
+                color: 'red',
+              },
+            ],
+          },
+        });
+      });
+    });
+
+    describe('columns', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <columns>
+                  <text>test columns</text>
+                </columns>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                columns: [{ text: 'test columns' }],
+              },
+            ],
+          },
+        });
+      });
+
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <columns fontSize={14} margin={[10, 20, 20, 0]}>
+                  <text>test columns</text>
+                </columns>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                columns: [{ text: 'test columns' }],
+                fontSize: 14,
+                margin: [10, 20, 20, 0],
+              },
+            ],
+          },
+        });
+      });
+
+      describe('column', () => {
+        it('should be converted', () => {
+          expect(
+            toPDFMake(
+              <document>
+                <content>
+                  <column>
+                    <text>test column</text>
+                  </column>
+                </content>
+              </document>,
+            ),
+          ).toEqual({
+            content: {
+              stack: [
+                {
+                  stack: [{ text: 'test column' }],
+                },
+              ],
             },
-          ],
-        },
+          });
+        });
+
+        it('should set passed attributes', () => {
+          expect(
+            toPDFMake(
+              <document>
+                <content>
+                  <column fontSize={24}>
+                    <text>test column</text>
+                  </column>
+                </content>
+              </document>,
+            ),
+          ).toEqual({
+            content: {
+              stack: [
+                {
+                  stack: [{ text: 'test column' }],
+                  fontSize: 24,
+                },
+              ],
+            },
+          });
+        });
+      });
+    });
+
+    describe('table', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <table>
+                  <text>test table</text>
+                </table>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                table: {
+                  body: [{ text: 'test table' }],
+                },
+              },
+            ],
+          },
+        });
+      });
+
+      it('should set "headerRows" and "widths" attributes on table', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <table headerRows={1} widths={['auto']}>
+                  <text>test table</text>
+                </table>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                table: {
+                  body: [{ text: 'test table' }],
+                  headerRows: 1,
+                  widths: ['auto'],
+                },
+              },
+            ],
+          },
+        });
+      });
+
+      it('should omit "headerRows" and "widths" on wrapper', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <table
+                  headerRows={1}
+                  widths={['auto']}
+                  margin={[10, 20, 20, 30]}
+                >
+                  <text>test table</text>
+                </table>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                table: {
+                  body: [{ text: 'test table' }],
+                  headerRows: 1,
+                  widths: ['auto'],
+                },
+                margin: [10, 20, 20, 30],
+              },
+            ],
+          },
+        });
+      });
+
+      describe('row', () => {
+        it('should be converted', () => {
+          expect(
+            toPDFMake(
+              <document>
+                <content>
+                  <row>
+                    <text>test row</text>
+                  </row>
+                </content>
+              </document>,
+            ),
+          ).toEqual({
+            content: {
+              stack: [[{ text: 'test row' }]],
+            },
+          });
+        });
+      });
+
+      describe('cell', () => {
+        it('should be converted', () => {
+          expect(
+            toPDFMake(
+              <document>
+                <content>
+                  <cell>
+                    <text>test cell</text>
+                  </cell>
+                </content>
+              </document>,
+            ),
+          ).toEqual({
+            content: {
+              stack: [
+                {
+                  stack: [{ text: 'test cell' }],
+                },
+              ],
+            },
+          });
+        });
+
+        it('should set passed attributes', () => {
+          expect(
+            toPDFMake(
+              <document>
+                <content>
+                  <cell fontSize={24}>
+                    <text>test cell</text>
+                  </cell>
+                </content>
+              </document>,
+            ),
+          ).toEqual({
+            content: {
+              stack: [
+                {
+                  stack: [{ text: 'test cell' }],
+                  fontSize: 24,
+                },
+              ],
+            },
+          });
+        });
+      });
+    });
+
+    describe('unordered list', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <ul>
+                  <text>test item 1</text>
+                  <text>test item 2</text>
+                </ul>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                ul: [{ text: 'test item 1' }, { text: 'test item 2' }],
+              },
+            ],
+          },
+        });
+      });
+
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <ul
+                  type="square"
+                  separator={['(', ')']}
+                  start={50}
+                  color="blue"
+                  markerColor="red"
+                  reversed
+                >
+                  <text>test item 1</text>
+                  <text>test item 2</text>
+                </ul>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                ul: [{ text: 'test item 1' }, { text: 'test item 2' }],
+                type: 'square',
+                separator: ['(', ')'],
+                start: 50,
+                color: 'blue',
+                markerColor: 'red',
+                reversed: true,
+              },
+            ],
+          },
+        });
+      });
+    });
+
+    describe('ordered list', () => {
+      it('should be converted', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <ol>
+                  <text>test item 1</text>
+                  <text>test item 2</text>
+                </ol>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                ol: [{ text: 'test item 1' }, { text: 'test item 2' }],
+              },
+            ],
+          },
+        });
+      });
+
+      it('should set passed attributes', () => {
+        expect(
+          toPDFMake(
+            <document>
+              <content>
+                <ol
+                  type="lower-roman"
+                  separator={['(', ')']}
+                  start={50}
+                  color="blue"
+                  markerColor="red"
+                  reversed
+                >
+                  <text>test item 1</text>
+                  <text>test item 2</text>
+                </ol>
+              </content>
+            </document>,
+          ),
+        ).toEqual({
+          content: {
+            stack: [
+              {
+                ol: [{ text: 'test item 1' }, { text: 'test item 2' }],
+                type: 'lower-roman',
+                separator: ['(', ')'],
+                start: 50,
+                color: 'blue',
+                markerColor: 'red',
+                reversed: true,
+              },
+            ],
+          },
+        });
       });
     });
   });
