@@ -17,9 +17,22 @@ this.headers['Content-Type'] = 'application/pdf';
 this.body = pdf;
 ```
 
-## PDF
-
 The library is a thin layer built on top of [pdfmake](http://pdfmake.org/). It currently supports a subset of pdfmake's features; most of the time, simply translating tags and attributes into pdfmake document definition format.
+
+## Quick start
+
+ - `yarn add jsx-pdf babel-plugin-transform-react-jsx@^6.0.0`
+ - Ensure babel is set up for your project and your .babelrc or equivalent contains
+   ```json
+   {
+     "plugins": [
+       ["transform-react-jsx", {
+         "pragma": "createElement"
+       }]
+     ]
+   }
+   ```
+  - Code away! See the examples below.
 
 ## Components
 
@@ -430,7 +443,7 @@ const render = createRenderer({
 
 ### createElement
 
-This function converts JSX to object representation. Every time JSX syntax is used, the function has to be made available. The functionality directly depends on `plugin-transform-react-jsx` package and Babel set up in the project.
+This function converts JSX to object representation. Every time JSX syntax is used, the function has to be made available. The functionality depends on something like `plugin-transform-react-jsx` and Babel set up in the project to convert the JSX to function calls (similar to React).
 
 Example `.babelrc` file:
 
