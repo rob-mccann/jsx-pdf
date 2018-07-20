@@ -137,6 +137,10 @@ function resolveChildren(tag, parentContext, isTopLevel) {
   }
 }
 
+/*
+ * Recursively traverse the JSON component tree created by the createElement calls,
+ * resolving components from the bottom up.
+ */
 export function toPDFMake(tag) {
   const context = createContext();
   const resolvedTag = resolve(tag, context);
@@ -183,7 +187,6 @@ export function createRenderer({ fontDescriptors, defaultStyle } = {}) {
   });
 
   return function render(elementJSON) {
-    // Recursively traverse the PDF template, converting the React-like syntax to pdfmake's syntax
     const doc = toPDFMake(elementJSON);
 
     const pdf = pdfMake.createPdfKitDocument({
