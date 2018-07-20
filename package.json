@@ -3,7 +3,7 @@
   "version": "0.8.0",
   "main": "dst/index.js",
   "author": "Rob McCann <rob.mccann@schibsted.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.schibsted.io:spt-advertising/jsx-to-pdf.git"
