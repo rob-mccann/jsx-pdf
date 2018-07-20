@@ -1,3 +1,8 @@
+/*
+ * Copyright 2018 Schibsted.
+ * Licensed under the MIT license. See LICENSE file in the project root for details.
+ */
+
 import MockPDFMake from 'pdfmake';
 import { createElement, createRenderer, toPDFMake } from '.';
 
