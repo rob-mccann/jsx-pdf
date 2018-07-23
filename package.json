@@ -2,6 +2,10 @@
   "name": "jsx-to-pdf",
   "version": "0.8.0",
   "main": "dst/index.js",
+  "files": [
+    "/dst",
+    "/fonts"
+  ],
   "author": "Rob McCann <rob.mccann@schibsted.com>",
   "license": "MIT",
   "repository": {
