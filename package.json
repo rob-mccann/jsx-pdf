@@ -12,9 +12,6 @@
     "type": "git",
     "url": "https://github.com/schibsted/jsx-pdf.git"
   },
-  "publishConfig": {
-    "registry": "https://artifacts.schibsted.io/artifactory/api/npm/npm-local"
-  },
   "scripts": {
     "dev": "yarn build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
