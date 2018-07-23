@@ -16,7 +16,6 @@
     "registry": "https://artifacts.schibsted.io/artifactory/api/npm/npm-local"
   },
   "scripts": {
-    "start": "node dst/index.js",
     "dev": "yarn build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
     "lint": "eslint src",
