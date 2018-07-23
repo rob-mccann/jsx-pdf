@@ -1,5 +1,5 @@
 {
-  "name": "jsx-to-pdf",
+  "name": "jsx-pdf",
   "version": "0.8.0",
   "main": "dst/index.js",
   "files": [
@@ -10,7 +10,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.schibsted.io:spt-advertising/jsx-to-pdf.git"
+    "url": "https://github.com/schibsted/jsx-pdf.git"
   },
   "publishConfig": {
     "registry": "https://artifacts.schibsted.io/artifactory/api/npm/npm-local"
