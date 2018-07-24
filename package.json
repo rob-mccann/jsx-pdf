@@ -1,6 +1,6 @@
 {
-  "name": "jsx-to-pdf",
-  "version": "0.8.0",
+  "name": "jsx-pdf",
+  "version": "0.0.1",
   "main": "dst/index.js",
   "files": [
     "/dst",
@@ -10,13 +10,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.schibsted.io:spt-advertising/jsx-to-pdf.git"
+    "url": "https://github.com/schibsted/jsx-pdf.git"
   },
   "publishConfig": {
     "registry": "https://artifacts.schibsted.io/artifactory/api/npm/npm-local"
   },
   "scripts": {
-    "start": "node dst/index.js",
     "dev": "yarn build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
     "lint": "eslint src",
