@@ -18,7 +18,7 @@
     "lint": "eslint src",
     "test": "yarn lint && jest",
     "prepublish": "yarn test && yarn build",
-    "prettier": "prettier --write src/**/*.js"
+    "prettier": "prettier --write **/*.{js,json,md,babelrc,eslintrc,prettierrc}"
   },
   "dependencies": {
     "lodash": "^4.17.10",
