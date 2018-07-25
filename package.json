@@ -15,10 +15,11 @@
   "scripts": {
     "dev": "yarn build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
-    "lint": "eslint src",
+    "lint": "eslint \"{src,example}\"",
     "test": "yarn lint && jest",
     "prepublish": "yarn test && yarn build",
-    "prettier": "prettier --write **/*.{js,json,md,babelrc,eslintrc,prettierrc}"
+    "prettier": "prettier --write **/*.{js,json,md,babelrc,eslintrc,prettierrc}",
+    "demo": "node --require babel-register example/index.js"
   },
   "dependencies": {
     "lodash": "^4.17.10",
@@ -30,6 +31,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "eslint": "^4.13.1",
     "eslint-config-schibsted": "^6.0.0",
     "eslint-config-schibsted-modules": "^6.0.0",
@@ -43,6 +45,7 @@
     "eslint-plugin-unicorn": "^3.0.1",
     "jest": "^23.1.0",
     "jest-watch-typeahead": "^0.1.0",
+    "koa": "^2.5.2",
     "prettier": "^1.9.2"
   },
   "peerDependencies": {
