@@ -154,7 +154,7 @@ const doc = (
 
 ### Styling
 
-Styling can be done by adding appropriate attributes to tags. It might be a good idea to group style-related attributes together and use the spread syntax.
+Styling can be done by adding appropriate attributes to tags. It's often helpful for readability to group style-related attributes together and use the spread syntax.
 
 ```jsx
 import { createElement } from 'jsx-to-pdf';
@@ -384,7 +384,7 @@ const doc = (
 
 ### createRenderer
 
-It's a factory function that optionally takes fonts and default document style as parameters and returns a render function.
+A factory function that optionally takes fonts and default document style as parameters and returns a render function.
 
 #### fontDescriptors
 
@@ -418,7 +418,7 @@ const render = createRenderer({
 
 ### createElement
 
-This function converts JSX to object representation. Every time JSX syntax is used, the function has to be made available. The functionality depends on something like `plugin-transform-react-jsx` and Babel set up in the project to convert the JSX to function calls (similar to React).
+This function converts JSX to object representation. Every time JSX syntax is used, the function has to be made available. The functionality depends the babel plugin `babel-plugin-transform-react-jsx` (or equivalent), and Babel must be set up in the project in order to transpile the JSX correctly.
 
 Example `.babelrc` file:
 
