@@ -1,13 +1,16 @@
 {
-  "presets" : [
-    ["env", {
-      "targets": {
-        "node": "6"
-      }
-    }]
+  presets: [
+    [
+      'env',
+      {
+        targets: {
+          node: '6',
+        },
+      },
+    ],
   ],
-  "plugins": [
-    ["transform-object-rest-spread", { "useBuiltIns": true }],
-    ["transform-react-jsx", { "pragma": "createElement" }]
-  ]
+  plugins: [
+    ['transform-object-rest-spread', { useBuiltIns: true }],
+    ['transform-react-jsx', { pragma: 'createElement' }],
+  ],
 }

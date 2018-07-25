@@ -6,7 +6,7 @@
     "/dst",
     "/fonts"
   ],
-  "author": "Rob McCann <rob.mccann@schibsted.com>",
+  "author": "Yaroslav Borcheninov <yaroslav-borcheninov@users.noreply.github.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "lint": "eslint src",
     "test": "yarn lint && jest",
     "prepublish": "yarn test && yarn build",
-    "prettier": "prettier --write src/**/*.js"
+    "prettier": "prettier --write **/*.{js,json,md,babelrc,eslintrc,prettierrc}"
   },
   "dependencies": {
     "lodash": "^4.17.10",

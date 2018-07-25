@@ -2,7 +2,7 @@
 
 This library allows you to generate PDFs using a react-like JSX syntax.
 
-```
+```jsx
 import { createElement, createRenderer } from 'jsx-to-pdf';
 
 const render = createRenderer();
@@ -10,7 +10,7 @@ const render = createRenderer();
 const pdf = render(
   <document>
     <content>This will appear in my PDF!</content>
-  </document>
+  </document>,
 );
 
 this.headers['Content-Type'] = 'application/pdf';
@@ -21,18 +21,21 @@ The library is a thin layer built on top of [pdfmake](http://pdfmake.org/). It c
 
 ## Quick start
 
- - `yarn add jsx-pdf babel-plugin-transform-react-jsx@^6.0.0`
- - Ensure babel is set up for your project and your .babelrc or equivalent contains
-   ```json
-   {
-     "plugins": [
-       ["transform-react-jsx", {
-         "pragma": "createElement"
-       }]
-     ]
-   }
-   ```
-  - Code away! See the examples below.
+- `yarn add jsx-pdf babel-plugin-transform-react-jsx@^6.0.0`
+- Ensure babel is set up for your project and your .babelrc or equivalent contains
+  ```json
+  {
+    "plugins": [
+      [
+        "transform-react-jsx",
+        {
+          "pragma": "createElement"
+        }
+      ]
+    ]
+  }
+  ```
+- Code away! See the examples below.
 
 ## Components
 
@@ -40,12 +43,10 @@ Similar to modern front-end frameworks, you can define your own components using
 
 #### Basic example:
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
-const Greeting = ({ name }) => (
-  <text>Hello, {name}!</text>
-);
+const Greeting = ({ name }) => <text>Hello, {name}!</text>;
 
 const doc = (
   <document>
@@ -58,15 +59,11 @@ const doc = (
 
 #### List example:
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const GroupGreeting = ({ names }) => (
-  <stack>
-    {names.map(name => (
-      <Greeting name={name} />
-    ))}
-  </stack>
+  <stack>{names.map(name => <Greeting name={name} />)}</stack>
 );
 
 const doc = (
@@ -80,12 +77,10 @@ const doc = (
 
 #### Inline If example:
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
-const Signature = () => (
-  <text>JSX-TO-PDF, Inc.</text>
-);
+const Signature = () => <text>JSX-TO-PDF, Inc.</text>;
 
 const SignedGreeting = ({ name }) => (
   <stack>
@@ -105,12 +100,10 @@ const doc = (
 
 #### Inline If-Else example:
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
-const AnonymousGreeting = () => (
-  <text>We don't know you.</text>
-);
+const AnonymousGreeting = () => <text>We don't know you.</text>;
 
 const SignedGreeting = ({ name }) => (
   <stack>
@@ -130,20 +123,16 @@ const doc = (
 
 #### Element variable example:
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const SignedGreeting = ({ name }) => {
   let greeting;
 
   if (name) {
-    greeting = (
-      <Greeting name={name} />
-    );
+    greeting = <Greeting name={name} />;
   } else {
-    greeting = (
-      <AnonymousGreeting />
-    );
+    greeting = <AnonymousGreeting />;
   }
 
   return (
@@ -152,7 +141,7 @@ const SignedGreeting = ({ name }) => {
       <Signature />
     </stack>
   );
-}
+};
 
 const doc = (
   <document>
@@ -167,7 +156,7 @@ const doc = (
 
 Styling can be done by adding appropriate attributes to tags. It might be a good idea to group style-related attributes together and use the spread syntax.
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const Greeting = ({ name }) => {
@@ -176,9 +165,7 @@ const Greeting = ({ name }) => {
     fontSize: 10,
   };
 
-  return (
-    <text {...styles}>Hello, {name}!</text>
-  );
+  return <text {...styles}>Hello, {name}!</text>;
 };
 
 const doc = (
@@ -194,7 +181,7 @@ const doc = (
 
 Each component has access to global context and can update it if necessary.
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const AllowedUsersProvider = (attributes, context, updateContext) => {
@@ -205,13 +192,12 @@ const AllowedUsersProvider = (attributes, context, updateContext) => {
   return attributes.children[0];
 };
 
-const SecureGreeting = ({ name }, { allowedUsers }) => (
+const SecureGreeting = ({ name }, { allowedUsers }) =>
   allowedUsers.includes(name) ? (
     <text>Hello, {name}!</text>
   ) : (
     <text>You are not allowed.</text>
-  )
-);
+  );
 
 const doc = (
   <AllowedUsersProvider>
@@ -232,7 +218,7 @@ This section describes basic elements provided by the library. More information 
 
 Each document has to be enclosed within `document` tag with nested `content`, and optional `header` and `footer`.
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const doc = (
@@ -248,15 +234,15 @@ const doc = (
 
 Paragraphs are defined using `text` tag.
 
-```
+<!-- prettier-ignore -->
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const doc = (
   <document>
     <content>
       <text>
-        This sentence will be rendered
-        as one paragraph,
+        This sentence will be rendered as one paragraph,
 
         even though there are
 
@@ -273,7 +259,7 @@ const doc = (
 
 In order to apply styling to a group of paragraphs, they can be wrapped with a `stack` tag.
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const doc = (
@@ -293,7 +279,7 @@ const doc = (
 
 Elements nested in `columns` tag will be stacked horizontally.
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const doc = (
@@ -302,7 +288,9 @@ const doc = (
       <columns columnGap={10}>
         <column width={100}>Fixed width column</column>
         <column width="10%">Percentage width column</column>
-        <column width="auto">Column that adjusts width based on the content</column>
+        <column width="auto">
+          Column that adjusts width based on the content
+        </column>
         <column width="*">Column that fills the remaining space</column>
       </columns>
     </content>
@@ -314,18 +302,13 @@ const doc = (
 
 Both ordered and unordered lists are supported.
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const docWithOrderedList = (
   <document>
     <content>
-      <ol
-        reversed
-        start={10}
-        separator={['(', ')']}
-        type="lower-roman"
-      >
+      <ol reversed start={10} separator={['(', ')']} type="lower-roman">
         <text>Item 1</text>
         <text>Item 2</text>
         <text>Item 3</text>
@@ -337,11 +320,7 @@ const docWithOrderedList = (
 const docWithUnorderedList = (
   <document>
     <content>
-      <ul
-        color="blue"
-        markerColor="red"
-        type="square"
-      >
+      <ul color="blue" markerColor="red" type="square">
         <text>Item 1</text>
         <text>Item 2</text>
         <text>Item 3</text>
@@ -355,7 +334,7 @@ const docWithUnorderedList = (
 
 `table` tag provides a simple way of creating table layouts.
 
-```
+```jsx
 const leftCellStyle = {
   color: 'grey',
 };
@@ -389,17 +368,13 @@ const doc = (
 
 `image` supports JPEG and PNG formats.
 
-```
+```jsx
 import { createElement } from 'jsx-to-pdf';
 
 const doc = (
   <document>
     <content>
-      <image
-        src="/home/bob/photos/Bob.png"
-        width={150}
-        height={150}
-      />
+      <image src="/home/bob/photos/Bob.png" width={150} height={150} />
     </content>
   </document>
 );
@@ -415,7 +390,7 @@ It's a factory function that optionally takes fonts and default document style a
 
 While the library uses OpenSans as a default font, additional fonts can be passed to the factory. Font paths have to be absolute.
 
-```
+```javascript
 const render = createRenderer({
   fontDescriptors: {
     Roboto: {
@@ -432,7 +407,7 @@ const render = createRenderer({
 
 The library defaults to using OpenSans 12pt, which can be overridden in the factory function.
 
-```
+```javascript
 const render = createRenderer({
   defaultStyle: {
     font: 'Roboto',
@@ -447,19 +422,25 @@ This function converts JSX to object representation. Every time JSX syntax is us
 
 Example `.babelrc` file:
 
-```
+```json
 {
-  "presets" : [
-    ["env", {
-      "targets": {
-        "node": "6"
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "6"
+        }
       }
-    }]
+    ]
   ],
   "plugins": [
-    ["transform-react-jsx", {
-      "pragma": "createElement"
-    }]
+    [
+      "transform-react-jsx",
+      {
+        "pragma": "createElement"
+      }
+    ]
   ]
 }
 ```
@@ -469,3 +450,7 @@ Example `.babelrc` file:
 Copyright 2018 Schibsted
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+## License
+
+By contributing to this project, you agree that your contributions will be licensed under its MIT license.

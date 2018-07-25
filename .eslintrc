@@ -4,7 +4,7 @@
     "schibsted/prettier-strict",
     "schibsted-modules",
     "schibsted-react",
-    "schibsted-node",
+    "schibsted-node"
   ],
   "root": true,
   "rules": {
@@ -16,7 +16,7 @@
   "overrides": [
     {
       "files": "**/*.test.js",
-      "plugins": [ "jest" ],
+      "plugins": ["jest"],
       "env": {
         "jest/globals": true
       }
