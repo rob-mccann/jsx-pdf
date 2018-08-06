@@ -1,6 +1,9 @@
 sudo: false
 language: node_js
 cache: yarn
+
+test: yarn test && yarn docker-test
+
 deploy:
   provider: npm
   skip_cleanup: true
