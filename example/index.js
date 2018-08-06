@@ -38,4 +38,10 @@ app.use(async ctx => {
   }
 });
 
-app.listen(3000, () => console.log('Listening on http://localhost:3000'));
+app.listen(3000, function(err) {
+  if (err) {
+    throw err;
+  }
+
+  console.log(`Koa app listening on port ${this.address()}`);
+});

@@ -15,11 +15,13 @@
   "scripts": {
     "dev": "yarn build -- --watch src",
     "build": "babel src --out-dir dst --ignore '**/*.test.js'",
-    "lint": "eslint \"{src,example}\"",
-    "test": "yarn lint && jest",
+    "lint": "eslint \"{src,example,test}\"",
+    "test": "yarn lint && jest -c jest.unit.config.js",
     "prepublish": "yarn test && yarn build",
     "prettier": "prettier --write **/*.{js,json,md,babelrc,eslintrc,prettierrc}",
-    "demo": "node --require babel-register example/index.js"
+    "demo": "node --require babel-register example/index.js",
+    "docker-test": "time docker build -t ssa-pdf . && sh test/test-integration.sh",
+    "test-integration": "E2E_BASE_URL=${E2E_BASE_URL:-http://localhost:3000} jest -c jest.integration.config.js"
   },
   "dependencies": {
     "lodash": "^4.17.10",
@@ -44,8 +46,11 @@
     "eslint-plugin-react": "^7.9.1",
     "eslint-plugin-unicorn": "^3.0.1",
     "jest": "^23.1.0",
+    "jest-junit": "^5.1.0",
     "jest-watch-typeahead": "^0.1.0",
     "koa": "^2.5.2",
+    "node-fetch": "^2.2.0",
+    "pdf2json": "^1.1.7",
     "prettier": "^1.9.2"
   },
   "peerDependencies": {
